@@ -1,14 +1,12 @@
 import React from "react";
-import "./globals.css";
-import Header from "@/components/header";
+import "@/styles/globals.css";
 
-export default function RootLayout({
+export default function ApplicationLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html>
+    <html lang="en">
       <body>
-        <Header />
         <main>{children}</main>
       </body>
     </html>
