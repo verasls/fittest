@@ -1,18 +1,26 @@
 import { Button } from "@/components/ui/button";
+import UserAvatar from "@/components/user-avatar";
+import { auth } from "@/lib/auth";
 import Link from "next/link";
 
-export default function Header() {
+export default async function Header() {
+  const session = await auth();
+
   return (
     <div className="flex justify-between bg-gray-100 px-4 py-2">
       <Link href="/">
-        <h1 className="text-2xl">Home</h1>
+        <h1 className="text-2xl">Fittest</h1>
       </Link>
 
-      <Button asChild>
-        <Link href="/login" className="text-lg">
-          Entrar
-        </Link>
-      </Button>
+      {session?.user?.image ? (
+        <UserAvatar session={session} />
+      ) : (
+        <Button asChild>
+          <Link href="/login" className="text-lg">
+            Entrar
+          </Link>
+        </Button>
+      )}
     </div>
   );
 }
