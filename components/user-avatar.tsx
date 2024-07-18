@@ -8,9 +8,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, Settings, User } from "lucide-react";
+import { Home, Settings, User } from "lucide-react";
 import { Session } from "next-auth";
 import Image from "next/image";
+import Link from "next/link";
 
 type UserAvatarProps = {
   session: Session;
@@ -40,9 +41,17 @@ export default function UserAvatar({ session }: UserAvatarProps) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem>
+          <Link href="/app/dashboard" className="flex w-full items-center">
+            <Home className="mr-2 h-4 w-4" />
+            <span>Painel</span>
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem>
           <User className="mr-2 h-4 w-4" />
           <span>Meu perfil</span>
         </DropdownMenuItem>
+
         <DropdownMenuItem>
           <Settings className="mr-2 h-4 w-4" />
           <span>Configurações</span>

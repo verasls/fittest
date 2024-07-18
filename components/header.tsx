@@ -7,7 +7,7 @@ export default async function Header() {
   const session = await auth();
 
   return (
-    <div className="flex justify-between bg-gray-100 px-4 py-2">
+    <div className="flex h-14 justify-between border-b bg-muted/40 px-4 py-2">
       <Link href="/">
         <h1 className="text-2xl">Fittest</h1>
       </Link>
