@@ -1,4 +1,5 @@
 import { AppNavigationLink } from "@/components/app-navigation-link";
+import { Heading } from "@/components/ui/heading";
 import { Home, Ruler, Settings, User, Users } from "lucide-react";
 import Link from "next/link";
 
@@ -7,7 +8,9 @@ export default function AppNavigation() {
     <aside className="border-r bg-muted/40">
       <div className="flex h-14 items-center border-b px-6 py-2">
         <Link href="/">
-          <h1 className="text-2xl">Fittest</h1>
+          <Heading type="h1" className="font-normal">
+            Fittest
+          </Heading>
         </Link>
       </div>
 

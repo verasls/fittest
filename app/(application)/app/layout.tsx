@@ -14,7 +14,7 @@ export default async function ApplicationLayout({
 
           <main>
             <AppHeader />
-            <div className="p-4">{children}</div>
+            <div className="p-6">{children}</div>
           </main>
         </div>
       </body>
