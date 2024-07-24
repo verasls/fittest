@@ -35,7 +35,7 @@ function AppNavigationLink({
 }: AppNavigationLinkProps) {
   const pathname = usePathname();
 
-  const variant = pathname === href ? "active" : "default";
+  const variant = pathname.startsWith(href) ? "active" : "default";
 
   return (
     <Link
