@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { Card } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -23,7 +24,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -62,110 +65,132 @@ export default function CreateNewClientForm() {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nome</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="phone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Telefone</FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  type="tel"
-                  pattern="\d*"
-                  inputMode="numeric"
-                  maxLength={11}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="sex"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Sexo</FormLabel>
-              <Select onValueChange={field.onChange}>
+    <Card className="px-10 py-8">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col gap-3"
+        >
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Nome*</FormLabel>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
+                  <Input {...field} />
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value="Feminino">Feminino</SelectItem>
-                  <SelectItem value="Masculino">Masculino</SelectItem>
-                  <SelectItem value="Outro">Outro</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="dateOfBirth"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Data de nascimento</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button variant="outline">
-                      Escolha uma data <CalendarIcon />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent>
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) => date > new Date()}
-                    initialFocus
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Telefone</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="tel"
+                    pattern="\d*"
+                    inputMode="numeric"
+                    maxLength={11}
                   />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <Button type="submit">Criar</Button>
-      </form>
-    </Form>
+          <div className="flex gap-4">
+            <FormField
+              control={form.control}
+              name="sex"
+              render={({ field }) => (
+                <FormItem className="flex w-1/2 flex-col">
+                  <FormLabel>Sexo*</FormLabel>
+                  <Select onValueChange={field.onChange}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Feminino">Feminino</SelectItem>
+                      <SelectItem value="Masculino">Masculino</SelectItem>
+                      <SelectItem value="Outro">Outro</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="dateOfBirth"
+              render={({ field }) => (
+                <FormItem className="flex w-1/2 flex-col">
+                  <FormLabel>Data de nascimento*</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? format(field.value, "dd/MM/yyyy") : ""}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={(date) => date > new Date()}
+                        fromYear={1900}
+                        toYear={new Date().getFullYear()}
+                        captionLayout="dropdown-buttons"
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-end gap-3 pt-4">
+            <Button type="button" variant="secondary">
+              Cancelar
+            </Button>
+            <Button type="submit">Concluir</Button>
+          </div>
+        </form>
+      </Form>
+    </Card>
   );
 }

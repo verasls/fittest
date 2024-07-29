@@ -24,9 +24,9 @@ export default async function ApplicationLayout({
         <div className="grid min-h-screen w-full grid-cols-[224px_1fr]">
           <AppNavigation />
 
-          <main>
+          <main className="flex flex-col gap-3">
             <AppHeader />
-            <div className="p-6">{children}</div>
+            <div className="px-20 py-10">{children}</div>
           </main>
         </div>
       </body>
