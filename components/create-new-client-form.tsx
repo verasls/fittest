@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Card } from "@/components/ui/card";
@@ -28,7 +29,6 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -58,8 +58,28 @@ export default function CreateNewClientForm() {
       email: "",
       phone: "",
       sex: undefined,
+      dateOfBirth: undefined,
     },
   });
+
+  const { isDirty } = form.formState;
+
+  useEffect(() => {
+    if (!isDirty) return;
+
+    function handleBeforeUnload(event: BeforeUnloadEvent) {
+      event.preventDefault();
+    }
+
+    window.addEventListener("beforeunload", handleBeforeUnload, {
+      capture: true,
+    });
+
+    return () =>
+      window.removeEventListener("beforeunload", handleBeforeUnload, {
+        capture: true,
+      });
+  }, [isDirty]);
 
   function handlePhoneChange(event: React.ChangeEvent<HTMLInputElement>) {
     let value = event.target.value.replace(/\D/g, "");
@@ -93,13 +113,13 @@ export default function CreateNewClientForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-3"
+          className="grid grid-cols-2 gap-3"
         >
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem className="flex flex-col">
+              <FormItem className="col-span-2 flex w-full flex-col">
                 <FormLabel>Nome*</FormLabel>
                 <FormControl>
                   <Input {...field} />
@@ -113,7 +133,7 @@ export default function CreateNewClientForm() {
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem className="flex flex-col">
+              <FormItem className="col-span-2 flex w-full flex-col">
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input {...field} />
@@ -127,7 +147,7 @@ export default function CreateNewClientForm() {
             control={form.control}
             name="phone"
             render={({ field }) => (
-              <FormItem className="flex flex-col">
+              <FormItem className="col-span-2 flex w-full flex-col">
                 <FormLabel>Telefone</FormLabel>
                 <FormControl>
                   <Input
@@ -144,74 +164,69 @@ export default function CreateNewClientForm() {
             )}
           />
 
-          <div className="flex gap-4">
-            <FormField
-              control={form.control}
-              name="sex"
-              render={({ field }) => (
-                <FormItem className="flex w-1/2 flex-col">
-                  <FormLabel>Sexo*</FormLabel>
-                  <Select onValueChange={field.onChange}>
+          <FormField
+            control={form.control}
+            name="sex"
+            render={({ field }) => (
+              <FormItem className="flex w-full flex-col">
+                <FormLabel>Sexo*</FormLabel>
+                <Select onValueChange={field.onChange}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="Feminino">Feminino</SelectItem>
+                    <SelectItem value="Masculino">Masculino</SelectItem>
+                    <SelectItem value="Outro">Outro</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="dateOfBirth"
+            render={({ field }) => (
+              <FormItem className="flex w-full flex-col">
+                <FormLabel>Data de nascimento*</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value ? format(field.value, "dd/MM/yyyy") : ""}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
                     </FormControl>
-                    <SelectContent>
-                      <SelectItem value="Feminino">Feminino</SelectItem>
-                      <SelectItem value="Masculino">Masculino</SelectItem>
-                      <SelectItem value="Outro">Outro</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) => date > new Date()}
+                      fromYear={1900}
+                      toYear={new Date().getFullYear()}
+                      captionLayout="dropdown-buttons"
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <FormField
-              control={form.control}
-              name="dateOfBirth"
-              render={({ field }) => (
-                <FormItem className="flex w-1/2 flex-col">
-                  <FormLabel>Data de nascimento*</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant="outline"
-                          className={cn(
-                            "text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? format(field.value, "dd/MM/yyyy") : ""}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={(date) => date > new Date()}
-                        fromYear={1900}
-                        toYear={new Date().getFullYear()}
-                        captionLayout="dropdown-buttons"
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className="flex justify-end gap-3 pt-4">
-            <Button type="button" variant="secondary">
-              Cancelar
-            </Button>
+          <div className="col-start-2 flex justify-end pt-4">
             <Button type="submit">Concluir</Button>
           </div>
         </form>
