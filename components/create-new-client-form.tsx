@@ -28,6 +28,7 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -59,6 +60,29 @@ export default function CreateNewClientForm() {
       sex: undefined,
     },
   });
+
+  function handlePhoneChange(event: React.ChangeEvent<HTMLInputElement>) {
+    let value = event.target.value.replace(/\D/g, "");
+
+    if (value.length > 11) {
+      value = value.slice(0, 11);
+    }
+
+    let formattedValue;
+    if (value.length > 6) {
+      formattedValue =
+        value.length > 10
+          ? `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`
+          : `(${value.slice(0, 2)}) ${value.slice(2, 6)}-${value.slice(6)}`;
+    } else if (value.length > 2) {
+      formattedValue = `(${value.slice(0, 2)}) ${value.slice(2)}`;
+    } else {
+      formattedValue = value;
+    }
+
+    event.target.value = formattedValue;
+    form.setValue("phone", formattedValue);
+  }
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
@@ -111,7 +135,8 @@ export default function CreateNewClientForm() {
                     type="tel"
                     pattern="\d*"
                     inputMode="numeric"
-                    maxLength={11}
+                    onChange={handlePhoneChange}
+                    maxLength={15}
                   />
                 </FormControl>
                 <FormMessage />
