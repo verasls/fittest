@@ -50,7 +50,7 @@ const formSchema = z.object({
   dateOfBirth: z.date({ message: "Por favor, inclua uma data de nascimento" }),
 });
 
-export default function CreateNewClientForm() {
+export default function CreateClientForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

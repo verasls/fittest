@@ -1,4 +1,4 @@
-import CreateNewClientForm from "@/components/create-new-client-form";
+import CreateClientForm from "@/components/create-client-form";
 import { Heading } from "@/components/ui/heading";
 
 export default function Page() {
@@ -11,7 +11,7 @@ export default function Page() {
           <p className="text-sm">Os campos marcados (*) são obrigatórios.</p>
         </div>
       </div>
-      <CreateNewClientForm />
+      <CreateClientForm />
     </div>
   );
 }
