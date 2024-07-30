@@ -3,6 +3,7 @@
 import { auth, signIn, signOut } from "@/lib/auth";
 import { Client } from "@/lib/schema";
 import { supabase } from "@/lib/supabase";
+import { redirect } from "next/navigation";
 
 export async function signInAction() {
   await signIn("google", { redirectTo: "/app/dashboard" });
@@ -19,4 +20,6 @@ export async function createClient(formData: Client) {
   const { error } = await supabase.from("clients").insert(formData).select();
 
   if (error) throw new Error("Não foi possível adicionar um novo cliente");
+
+  redirect("/app/clients");
 }
