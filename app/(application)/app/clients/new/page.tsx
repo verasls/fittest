@@ -1,7 +1,11 @@
 import CreateClientForm from "@/components/create-client-form";
 import { Heading } from "@/components/ui/heading";
+import { auth } from "@/lib/auth";
 
-export default function Page() {
+export default async function Page() {
+  const session = await auth();
+  const userId = session!.user!.id!;
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
@@ -11,7 +15,7 @@ export default function Page() {
           <p className="text-sm">Os campos marcados (*) são obrigatórios.</p>
         </div>
       </div>
-      <CreateClientForm />
+      <CreateClientForm userId={userId} />
     </div>
   );
 }

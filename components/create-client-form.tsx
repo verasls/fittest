@@ -31,8 +31,10 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { createClient } from "@/lib/actions";
 
 const formSchema = z.object({
+  userId: z.string(),
   name: z
     .string()
     .min(2, { message: "O nome tem que ter pelo menos dois caracteres" }),
@@ -42,7 +44,9 @@ const formSchema = z.object({
     .or(z.literal("")),
   phone: z
     .string()
-    .regex(/^\d{1,11}$/, { message: "Número de telefone inválido" })
+    .regex(/^\(\d{2}\) \d{4,5}-\d{4}$/, {
+      message: "Número de telefone inválido",
+    })
     .or(z.literal("")),
   sex: z.enum(["Feminino", "Masculino", "Outro"], {
     message: "Por favor, escolha uma opção",
@@ -50,10 +54,17 @@ const formSchema = z.object({
   dateOfBirth: z.date({ message: "Por favor, inclua uma data de nascimento" }),
 });
 
-export default function CreateClientForm() {
+export type CreateClientFormData = z.infer<typeof formSchema>;
+
+type CreateClientFormProps = {
+  userId: string;
+};
+
+export default function CreateClientForm({ userId }: CreateClientFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      userId: userId,
       name: "",
       email: "",
       phone: "",
@@ -104,8 +115,8 @@ export default function CreateClientForm() {
     form.setValue("phone", formattedValue);
   }
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: CreateClientFormData) {
+    await createClient(values);
   }
 
   return (
@@ -115,6 +126,18 @@ export default function CreateClientForm() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="grid grid-cols-2 gap-3"
         >
+          <FormField
+            control={form.control}
+            name="userId"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <input {...field} type="hidden" />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="name"
@@ -153,8 +176,7 @@ export default function CreateClientForm() {
                   <Input
                     {...field}
                     type="tel"
-                    pattern="\d*"
-                    inputMode="numeric"
+                    inputMode="tel"
                     onChange={handlePhoneChange}
                     maxLength={15}
                   />
