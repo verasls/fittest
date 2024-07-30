@@ -3,6 +3,15 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Client } from "@/lib/schema";
 import { format, differenceInYears } from "date-fns";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Eye, MoreHorizontal, Ruler, SquarePen, Trash2 } from "lucide-react";
 
 const renderCell = (value: string | undefined, fallback: string = "-") => {
   return <div>{value?.length ? value : fallback}</div>;
@@ -68,6 +77,43 @@ export const columns: ColumnDef<Client>[] = [
     cell: ({ row }) => {
       const phone = row.getValue<string>("phone");
       return renderCell(phone);
+    },
+  },
+  {
+    accessorKey: "actions",
+    header: "",
+    cell: ({ row }) => {
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Abrir menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem>
+              <Ruler className="mr-2 h-4 w-4" />
+              <span>Nova avaliação</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Eye className="mr-2 h-4 w-4" />
+              <span>Ver avaliações</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem>
+              <SquarePen className="mr-2 h-4 w-4" />
+              <span>Editar cliente</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Trash2 className="mr-2 h-4 w-4" />
+              <span>Excluir cliente</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
     },
   },
 ];
