@@ -11,7 +11,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Eye, MoreHorizontal, Ruler, SquarePen, Trash2 } from "lucide-react";
+import {
+  ArrowUpDown,
+  Eye,
+  MoreHorizontal,
+  Ruler,
+  SquarePen,
+  Trash2,
+} from "lucide-react";
 
 const renderCell = (value: string | undefined, fallback: string = "-") => {
   return <div>{value?.length ? value : fallback}</div>;
@@ -20,7 +27,17 @@ const renderCell = (value: string | undefined, fallback: string = "-") => {
 export const columns: ColumnDef<Client>[] = [
   {
     accessorKey: "name",
-    header: "Nome",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <span>Nome</span>
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
   {
     accessorKey: "sex",
