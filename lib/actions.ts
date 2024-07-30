@@ -1,7 +1,7 @@
 "use server";
 
-import { CreateClientFormData } from "@/components/create-client-form";
 import { auth, signIn, signOut } from "@/lib/auth";
+import { Client } from "@/lib/schema";
 import { supabase } from "@/lib/supabase";
 
 export async function signInAction() {
@@ -12,7 +12,7 @@ export async function signOutAction() {
   await signOut({ redirectTo: "/" });
 }
 
-export async function createClient(formData: CreateClientFormData) {
+export async function createClient(formData: Client) {
   const session = await auth();
   if (!session) throw new Error("Você precisa estar autenticado");
 

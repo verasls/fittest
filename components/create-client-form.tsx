@@ -32,37 +32,15 @@ import { CalendarIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { createClient } from "@/lib/actions";
-
-const formSchema = z.object({
-  userId: z.string(),
-  name: z
-    .string()
-    .min(2, { message: "O nome tem que ter pelo menos dois caracteres" }),
-  email: z
-    .string()
-    .email({ message: "Endereço de email inválido" })
-    .or(z.literal("")),
-  phone: z
-    .string()
-    .regex(/^\(\d{2}\) \d{4,5}-\d{4}$/, {
-      message: "Número de telefone inválido",
-    })
-    .or(z.literal("")),
-  sex: z.enum(["Feminino", "Masculino", "Outro"], {
-    message: "Por favor, escolha uma opção",
-  }),
-  dateOfBirth: z.date({ message: "Por favor, inclua uma data de nascimento" }),
-});
-
-export type CreateClientFormData = z.infer<typeof formSchema>;
+import { Client, clientSchema } from "@/lib/schema";
 
 type CreateClientFormProps = {
   userId: string;
 };
 
 export default function CreateClientForm({ userId }: CreateClientFormProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof clientSchema>>({
+    resolver: zodResolver(clientSchema),
     defaultValues: {
       userId: userId,
       name: "",
@@ -115,7 +93,7 @@ export default function CreateClientForm({ userId }: CreateClientFormProps) {
     form.setValue("phone", formattedValue);
   }
 
-  async function onSubmit(values: CreateClientFormData) {
+  async function onSubmit(values: Client) {
     await createClient(values);
   }
 
