@@ -1,10 +1,10 @@
 import { columns } from "@/app/(application)/app/clients/columns";
 import { DataTable } from "@/app/(application)/app/clients/data-table";
 import { Heading } from "@/components/ui/heading";
-import { readClients } from "@/lib/data-services";
+import { readAllClients } from "@/lib/data-services";
 
 export default async function Page() {
-  const clients = await readClients();
+  const clients = await readAllClients();
 
   return (
     <div className="flex flex-col gap-6">

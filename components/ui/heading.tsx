@@ -10,7 +10,7 @@ const headingVariants = cva("", {
     type: {
       h1: "text-xl font-semibold sm:text-2xl",
       h2: "text-lg font-semibold sm:text-xl",
-      h3: "text-lg font-medium sm:text-xl",
+      h3: "text-base font-medium sm:text-lg",
     },
   },
 });

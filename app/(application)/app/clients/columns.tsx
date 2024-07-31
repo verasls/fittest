@@ -19,6 +19,7 @@ import {
   SquarePen,
   Trash2,
 } from "lucide-react";
+import Link from "next/link";
 
 export const columns: ColumnDef<Client>[] = [
   {
@@ -111,13 +112,20 @@ export const columns: ColumnDef<Client>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem>
-              <Eye className="mr-2 h-4 w-4" />
-              <span>Ver cliente</span>
+              <Link
+                href={`clients/${row.original.id}`}
+                className="flex w-full items-center"
+              >
+                <Eye className="mr-2 h-4 w-4" />
+                <span>Ver cliente</span>
+              </Link>
             </DropdownMenuItem>
+
             <DropdownMenuItem>
               <SquarePen className="mr-2 h-4 w-4" />
               <span>Editar cliente</span>
             </DropdownMenuItem>
+
             <DropdownMenuItem>
               <Trash2 className="mr-2 h-4 w-4" />
               <span>Excluir cliente</span>
@@ -129,6 +137,7 @@ export const columns: ColumnDef<Client>[] = [
               <Eye className="mr-2 h-4 w-4" />
               <span>Ver avaliações</span>
             </DropdownMenuItem>
+
             <DropdownMenuItem>
               <Ruler className="mr-2 h-4 w-4" />
               <span>Nova avaliação</span>

@@ -25,7 +25,42 @@ export async function createNewUser(newUser: User) {
   return data;
 }
 
-export async function readClients() {
+export async function readClientById(clientId: string) {
+  const session = await auth();
+  if (!session) throw new Error("Você precisa estar autenticado");
+
+  const userId = session.user!.id;
+
+  const { data, error } = await supabase
+    .from("clients")
+    .select("*")
+    .eq("userId", userId)
+    .eq("id", clientId);
+
+  if (error) throw new Error("Não foi possível obter os dados do cliente");
+
+  const client = data.map((client) => {
+    const processedClient = {
+      ...client,
+      createdAt: new Date(client.createdAt),
+      dateOfBirth: new Date(client.dateOfBirth),
+    };
+    const parsedData = clientSchema.safeParse(processedClient);
+
+    if (!parsedData.success)
+      throw new Error(
+        `Dados do cliente inválidos: ${parsedData.error.message}`
+      );
+
+    return parsedData.data;
+  });
+
+  if (client.length !== 1) throw new Error("Dados do cliente inválidos");
+
+  return client.at(0);
+}
+
+export async function readAllClients() {
   const session = await auth();
   if (!session) throw new Error("Você precisa estar autenticado");
 
