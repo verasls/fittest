@@ -4,9 +4,10 @@ import Link from "next/link";
 
 type ButtonCreateProps = {
   type: "createClient" | "updateClient" | "createEvaluation";
+  clientId?: string;
 };
 
-export default function ActionButton({ type }: ButtonCreateProps) {
+export default function ActionButton({ type, clientId }: ButtonCreateProps) {
   let icon: JSX.Element;
   let text: string;
   let link: string;
@@ -21,7 +22,7 @@ export default function ActionButton({ type }: ButtonCreateProps) {
     case "updateClient":
       icon = <SquarePen className="mr-2 h-4 w-4" />;
       text = "Editar cliente";
-      link = "#";
+      link = `/app/clients/${clientId}/edit`;
       break;
 
     case "createEvaluation":

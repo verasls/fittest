@@ -23,3 +23,17 @@ export async function createClient(formData: Client) {
 
   redirect("/app/clients");
 }
+
+export async function updateClientById(updatedValues: Client) {
+  const session = await auth();
+  if (!session) throw new Error("Você precisa estar autenticado");
+
+  const { error } = await supabase
+    .from("clients")
+    .update(updatedValues)
+    .eq("id", updatedValues.id!);
+
+  if (error) throw new Error("Não foi possível atualizar os dados do cliente");
+
+  redirect(`/app/clients/${updatedValues.id!}`);
+}

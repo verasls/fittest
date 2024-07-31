@@ -30,8 +30,6 @@ export default async function Page({
 
   if (!client) return;
 
-  console.log(client);
-
   return (
     <>
       <Breadcrumb className="mb-6">
@@ -116,7 +114,7 @@ export default async function Page({
         </CardContent>
 
         <CardFooter className="flex gap-3 pt-6">
-          <ActionButton type="updateClient" />
+          <ActionButton type="updateClient" clientId={clientId} />
           <ActionButton type="createEvaluation" />
         </CardFooter>
       </Card>
