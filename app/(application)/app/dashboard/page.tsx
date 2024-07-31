@@ -7,7 +7,9 @@ export default async function Page() {
 
   return (
     <div>
-      <Heading type="h2">Olá, {session!.user!.name!.split(" ").at(0)}!</Heading>
+      <Heading type="h2" className="mt-6">
+        Olá, {session!.user!.name!.split(" ").at(0)}!
+      </Heading>
 
       <div className="flex gap-3 pt-6">
         <ActionButton type="createClient" />

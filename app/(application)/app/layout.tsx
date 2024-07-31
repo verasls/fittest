@@ -27,7 +27,7 @@ export default async function ApplicationLayout({
 
           <main className="flex flex-col gap-3">
             <AppHeader />
-            <div className="px-20 py-10">{children}</div>
+            <div className="px-20 py-4">{children}</div>
           </main>
         </div>
 
