@@ -19,6 +19,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
+import CreateButton from "@/components/create-button";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -45,7 +46,7 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="w-full rounded-md border">
         <Table>
-          <TableHeader className="px-0">
+          <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -103,7 +104,7 @@ export function DataTable<TData, TValue>({
         >
           Anterior
         </Button>
-        <span className="text-sm">
+        <span className="text-sm font-medium">
           Página {table.getState().pagination.pageIndex + 1} de{" "}
           {table.getPageCount().toLocaleString()}
         </span>
@@ -115,6 +116,10 @@ export function DataTable<TData, TValue>({
         >
           Próxima
         </Button>
+      </div>
+
+      <div className="flex items-center justify-end gap-2 space-x-2 py-4">
+        <CreateButton type="client" />
       </div>
     </div>
   );

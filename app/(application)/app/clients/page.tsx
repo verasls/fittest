@@ -1,6 +1,5 @@
 import { columns } from "@/app/(application)/app/clients/columns";
 import { DataTable } from "@/app/(application)/app/clients/data-table";
-import CreateButton from "@/components/create-button";
 import { Heading } from "@/components/ui/heading";
 import { readClients } from "@/lib/data-services";
 
@@ -13,10 +12,6 @@ export default async function Page() {
 
       <div className="container mx-auto py-10">
         <DataTable columns={columns} data={clients} />
-      </div>
-
-      <div className="self-end">
-        <CreateButton type="client" />
       </div>
     </div>
   );

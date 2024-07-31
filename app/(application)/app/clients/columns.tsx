@@ -35,7 +35,7 @@ export const columns: ColumnDef<Client>[] = [
       );
     },
     cell: ({ row }) => {
-      return <span className="px-4">{row.original.name}</span>;
+      return <p className="w-[36ch] truncate px-4">{row.original.name}</p>;
     },
   },
   {
