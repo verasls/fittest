@@ -8,7 +8,7 @@ type ButtonCreateProps = {
 
 export default function CreateButton({ type }: ButtonCreateProps) {
   return (
-    <Button asChild className="h-9">
+    <Button asChild size="sm">
       {type === "client" ? (
         <Link href="/app/clients/new">
           <Users className="mr-2 h-4 w-4" />
