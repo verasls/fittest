@@ -54,5 +54,10 @@ export async function readClients() {
     return parsedData.data;
   });
 
-  return clients;
+  const sortedClients = clients.sort(
+    (a, b) =>
+      new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()
+  );
+
+  return sortedClients;
 }
