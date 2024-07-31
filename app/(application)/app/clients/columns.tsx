@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Client } from "@/lib/schema";
-import { format, differenceInYears } from "date-fns";
+import { format } from "date-fns";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,10 +20,6 @@ import {
   Trash2,
 } from "lucide-react";
 
-const renderCell = (value: string | undefined, fallback: string = "-") => {
-  return <div>{value?.length ? value : fallback}</div>;
-};
-
 export const columns: ColumnDef<Client>[] = [
   {
     accessorKey: "name",
@@ -38,62 +34,67 @@ export const columns: ColumnDef<Client>[] = [
         </Button>
       );
     },
-  },
-  {
-    accessorKey: "sex",
-    header: () => <div className="text-center">Sexo</div>,
     cell: ({ row }) => {
-      const sex = row.getValue<string>("sex") ?? "";
-      return <div className="text-center">{sex.at(0)}</div>;
+      return <span className="px-4">{row.original.name}</span>;
     },
   },
   {
-    accessorKey: "age",
-    header: () => <div className="text-center">Idade</div>,
+    accessorKey: "sex",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <span>Sexo</span>
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
-      const dateOfBirth = row.getValue<string>("dateOfBirth");
-      const age = dateOfBirth
-        ? differenceInYears(new Date(), new Date(dateOfBirth))
-        : "-";
-      return <div className="text-center tabular-nums">{age}</div>;
+      return <span className="px-4">{row.original.sex}</span>;
     },
   },
   {
     accessorKey: "dateOfBirth",
-    header: "Data de nascimento",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <span>Data de nascimento</span>
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const dateOfBirth = row.getValue<string>("dateOfBirth");
       const formattedDate = dateOfBirth
         ? format(new Date(dateOfBirth), "dd/MM/yyyy")
         : "-";
-      return <div className="tabular-nums">{formattedDate}</div>;
+      return <span className="px-4 tabular-nums">{formattedDate}</span>;
     },
   },
   {
     accessorKey: "createdAt",
-    header: "Data de criação",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <span>Cliente desde</span>
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const createdAt = row.getValue<string>("createdAt");
       const formattedDate = createdAt
         ? format(new Date(createdAt), "dd/MM/yyyy")
         : "-";
-      return <div className="tabular-nums">{formattedDate}</div>;
-    },
-  },
-  {
-    accessorKey: "email",
-    header: "Email",
-    cell: ({ row }) => {
-      const email = row.getValue<string>("email");
-      return renderCell(email);
-    },
-  },
-  {
-    accessorKey: "phone",
-    header: "Telefone",
-    cell: ({ row }) => {
-      const phone = row.getValue<string>("phone");
-      return renderCell(phone);
+      return <span className="px-4 tabular-nums">{formattedDate}</span>;
     },
   },
   {
@@ -102,7 +103,7 @@ export const columns: ColumnDef<Client>[] = [
     cell: ({ row }) => {
       return (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger asChild className="px-4">
             <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Abrir menu</span>
               <MoreHorizontal className="h-4 w-4" />
