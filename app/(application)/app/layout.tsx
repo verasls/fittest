@@ -4,6 +4,7 @@ import AppHeader from "@/components/app-header";
 import AppNavigation from "@/components/app-navigation";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/toaster";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -29,6 +30,8 @@ export default async function ApplicationLayout({
             <div className="px-20 py-10">{children}</div>
           </main>
         </div>
+
+        <Toaster />
       </body>
     </html>
   );

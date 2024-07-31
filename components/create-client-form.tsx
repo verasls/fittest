@@ -28,17 +28,20 @@ import {
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, CircleCheck } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { createClient } from "@/lib/actions";
 import { Client, clientSchema } from "@/lib/schema";
+import { useToast } from "@/components/ui/use-toast";
 
 type CreateClientFormProps = {
   userId: string;
 };
 
 export default function CreateClientForm({ userId }: CreateClientFormProps) {
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof clientSchema>>({
     resolver: zodResolver(clientSchema),
     defaultValues: {
@@ -95,6 +98,16 @@ export default function CreateClientForm({ userId }: CreateClientFormProps) {
 
   async function onSubmit(values: Client) {
     await createClient(values);
+    toast({
+      description: (
+        <div className="flex items-center gap-3">
+          <div className="text-primary">
+            <CircleCheck className="h-6 w-6" />
+          </div>
+          <span>Cliente adicionado com sucesso!</span>
+        </div>
+      ),
+    });
   }
 
   return (
