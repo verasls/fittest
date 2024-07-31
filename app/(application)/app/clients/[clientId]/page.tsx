@@ -1,4 +1,4 @@
-import CreateButton from "@/components/create-button";
+import ActionButton from "@/components/action-button";
 import {
   Card,
   CardContent,
@@ -87,8 +87,8 @@ export default async function Page({
       </CardContent>
 
       <CardFooter className="flex gap-3 pt-6">
-        <CreateButton type="updateClient" />
-        <CreateButton type="evaluation" />
+        <ActionButton type="updateClient" />
+        <ActionButton type="createEvaluation" />
       </CardFooter>
     </Card>
   );

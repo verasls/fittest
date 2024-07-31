@@ -21,7 +21,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import CreateButton from "@/components/create-button";
+import ActionButton from "@/components/action-button";
 import { Input } from "@/components/ui/input";
 
 interface DataTableProps<TData, TValue> {
@@ -60,7 +60,7 @@ export function DataTable<TData, TValue>({
           className="max-w-sm"
         />
 
-        <CreateButton type="client" />
+        <ActionButton type="createClient" />
       </div>
 
       <div className="rounded-md border">
