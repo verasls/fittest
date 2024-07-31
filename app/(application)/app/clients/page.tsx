@@ -10,7 +10,7 @@ export default async function Page() {
     <div className="flex flex-col gap-6">
       <Heading type="h2">Meus clientes</Heading>
 
-      <div className="container mx-auto py-10">
+      <div className="container mx-auto py-4">
         <DataTable columns={columns} data={clients} />
       </div>
     </div>

@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/table";
 import {
   ColumnDef,
+  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
@@ -20,6 +22,7 @@ import {
 } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import CreateButton from "@/components/create-button";
+import { Input } from "@/components/ui/input";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -30,6 +33,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({
@@ -37,14 +41,29 @@ export function DataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    state: { sorting },
+    state: { columnFilters, sorting },
   });
 
   return (
     <div>
-      <div className="w-full rounded-md border">
+      <div className="flex items-center justify-between py-4">
+        <Input
+          placeholder="Buscar pelo nome"
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("name")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+
+        <CreateButton type="client" />
+      </div>
+
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -116,10 +135,6 @@ export function DataTable<TData, TValue>({
         >
           Próxima
         </Button>
-      </div>
-
-      <div className="flex items-center justify-end gap-2 space-x-2 py-4">
-        <CreateButton type="client" />
       </div>
     </div>
   );
