@@ -110,16 +110,9 @@ export const columns: ColumnDef<Client>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem>
-              <Ruler className="mr-2 h-4 w-4" />
-              <span>Nova avaliação</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
               <Eye className="mr-2 h-4 w-4" />
-              <span>Ver avaliações</span>
+              <span>Ver cliente</span>
             </DropdownMenuItem>
-
-            <DropdownMenuSeparator />
-
             <DropdownMenuItem>
               <SquarePen className="mr-2 h-4 w-4" />
               <span>Editar cliente</span>
@@ -127,6 +120,17 @@ export const columns: ColumnDef<Client>[] = [
             <DropdownMenuItem>
               <Trash2 className="mr-2 h-4 w-4" />
               <span>Excluir cliente</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem>
+              <Eye className="mr-2 h-4 w-4" />
+              <span>Ver avaliações</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Ruler className="mr-2 h-4 w-4" />
+              <span>Nova avaliação</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
