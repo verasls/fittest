@@ -113,7 +113,7 @@ export const columns: ColumnDef<Client>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuItem>
               <Link
-                href={`clients/${row.original.id}`}
+                href={`/app/clients/${row.original.id}`}
                 className="flex w-full items-center"
               >
                 <Eye className="mr-2 h-4 w-4" />
@@ -122,8 +122,13 @@ export const columns: ColumnDef<Client>[] = [
             </DropdownMenuItem>
 
             <DropdownMenuItem>
-              <SquarePen className="mr-2 h-4 w-4" />
-              <span>Editar cliente</span>
+              <Link
+                href={`/app/clients/${row.original.id}/edit`}
+                className="flex w-full items-center"
+              >
+                <SquarePen className="mr-2 h-4 w-4" />
+                <span>Editar cliente</span>
+              </Link>
             </DropdownMenuItem>
 
             <DropdownMenuItem>
