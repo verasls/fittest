@@ -39,7 +39,7 @@ export async function readClientById(clientId: string) {
 
   if (error) throw new Error("Não foi possível obter os dados do cliente");
 
-  const client = data.map((client) => {
+  const clientArray = data.map((client) => {
     const processedClient = {
       ...client,
       createdAt: new Date(client.createdAt),
@@ -55,9 +55,9 @@ export async function readClientById(clientId: string) {
     return parsedData.data;
   });
 
-  if (client.length !== 1) throw new Error("Dados do cliente inválidos");
+  const client = clientArray.at(0)!;
 
-  return client.at(0);
+  return client;
 }
 
 export async function readAllClients() {
