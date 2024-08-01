@@ -114,8 +114,9 @@ export default async function Page({
         </CardContent>
 
         <CardFooter className="flex gap-3 pt-6">
-          <ActionButton type="updateClient" clientId={clientId} />
           <ActionButton type="createEvaluation" />
+          <ActionButton type="updateClient" clientId={clientId} />
+          <ActionButton type="deleteClient" clientId={clientId} />
         </CardFooter>
       </Card>
     </>
