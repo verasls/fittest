@@ -28,6 +28,11 @@ export async function updateClientById(updatedValues: Client) {
   const session = await auth();
   if (!session) throw new Error("Você precisa estar autenticado");
 
+  if (updatedValues.userId !== session.user!.id)
+    throw new Error(
+      "Você não tem autorização para atualizar os dados deste cliente"
+    );
+
   const { error } = await supabase
     .from("clients")
     .update(updatedValues)
