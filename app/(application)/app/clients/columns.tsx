@@ -36,7 +36,13 @@ export const columns: ColumnDef<Client>[] = [
       );
     },
     cell: ({ row }) => {
-      return <p className="w-[36ch] truncate px-4">{row.original.name}</p>;
+      return (
+        <Link href={`/app/clients/${row.original.id}`}>
+          <p className="w-[36ch] truncate px-4 underline-offset-4 hover:underline">
+            {row.original.name}
+          </p>
+        </Link>
+      );
     },
   },
   {
