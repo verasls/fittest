@@ -15,7 +15,7 @@ import {
   StepsLabel,
   StepsList,
   StepsTrigger,
-} from "@/components/ui/tabs";
+} from "@/components/ui/steps";
 import { Separator } from "@/components/ui/separator";
 
 export default function Page() {
