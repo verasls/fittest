@@ -1,15 +1,8 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Image from "next/image";
 import SignInButton from "@/components/signin-button";
 
 export function LoginForm() {
@@ -17,9 +10,6 @@ export function LoginForm() {
     <Card className="mx-auto max-w-sm">
       <CardHeader>
         <CardTitle className="text-2xl">Entrar</CardTitle>
-        <CardDescription>
-          Digite seu e-mail abaixo para acessar sua conta
-        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
