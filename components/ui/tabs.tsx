@@ -5,39 +5,79 @@ import * as TabsPrimitive from "@radix-ui/react-tabs";
 
 import { cn } from "@/lib/utils";
 
-const Tabs = TabsPrimitive.Root;
+const Steps = TabsPrimitive.Root;
 
-const TabsList = React.forwardRef<
+const StepsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
 >(({ className, ...props }, ref) => (
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground",
+      "inline-flex h-10 items-center justify-center gap-1 p-1 text-muted-foreground",
       className
     )}
     {...props}
   />
 ));
-TabsList.displayName = TabsPrimitive.List.displayName;
+StepsList.displayName = TabsPrimitive.List.displayName;
 
-const TabsTrigger = React.forwardRef<
+const StepsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
 >(({ className, ...props }, ref) => (
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
+      "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:text-foreground",
       className
     )}
     {...props}
   />
 ));
-TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
+StepsTrigger.displayName = TabsPrimitive.Trigger.displayName;
 
-const TabsContent = React.forwardRef<
+interface StepsButtonProps extends React.ComponentPropsWithoutRef<"span"> {
+  children: React.ReactNode;
+}
+
+const StepsButton: React.FC<StepsButtonProps> = ({
+  children,
+  className,
+  ...props
+}) => (
+  <span
+    className={cn(
+      "flex h-6 w-6 items-center justify-center rounded-full text-sm font-medium group-data-[state=active]:bg-primary group-data-[state=inactive]:bg-secondary group-data-[state=active]:text-white",
+      className
+    )}
+    {...props}
+  >
+    {children}
+  </span>
+);
+
+interface StepsLabelProps extends React.ComponentPropsWithoutRef<"span"> {
+  children: React.ReactNode;
+}
+
+const StepsLabel: React.FC<StepsLabelProps> = ({
+  children,
+  className,
+  ...props
+}) => (
+  <span
+    className={cn(
+      "absolute left-1/2 top-8 -translate-x-1/2 transform",
+      className
+    )}
+    {...props}
+  >
+    {children}
+  </span>
+);
+
+const StepsContent = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
 >(({ className, ...props }, ref) => (
@@ -50,6 +90,13 @@ const TabsContent = React.forwardRef<
     {...props}
   />
 ));
-TabsContent.displayName = TabsPrimitive.Content.displayName;
+StepsContent.displayName = TabsPrimitive.Content.displayName;
 
-export { Tabs, TabsList, TabsTrigger, TabsContent };
+export {
+  Steps,
+  StepsList,
+  StepsTrigger,
+  StepsButton,
+  StepsLabel,
+  StepsContent,
+};
