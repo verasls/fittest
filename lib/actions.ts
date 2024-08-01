@@ -1,8 +1,10 @@
 "use server";
 
 import { auth, signIn, signOut } from "@/lib/auth";
+import { readClientById } from "@/lib/data-services";
 import { Client } from "@/lib/schema";
 import { supabase } from "@/lib/supabase";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function signInAction() {
@@ -41,4 +43,20 @@ export async function updateClientById(updatedValues: Client) {
   if (error) throw new Error("Não foi possível atualizar os dados do cliente");
 
   redirect(`/app/clients/${updatedValues.id!}`);
+}
+
+export async function deleteClientById(clientId: string) {
+  const session = await auth();
+  if (!session) throw new Error("Você precisa estar autenticado");
+
+  const client = await readClientById(clientId);
+
+  if (client.userId !== session.user!.id)
+    throw new Error("Você não tem autorização para excluir este cliente");
+
+  const { error } = await supabase.from("clients").delete().eq("id", clientId);
+
+  if (error) throw new Error("Não foi possível exluir este cliente");
+
+  revalidatePath("/app/clients");
 }

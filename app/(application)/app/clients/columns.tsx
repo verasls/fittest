@@ -10,9 +10,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   ArrowUpDown,
+  CircleCheck,
   Eye,
   MoreHorizontal,
   Ruler,
@@ -20,6 +32,22 @@ import {
   Trash2,
 } from "lucide-react";
 import Link from "next/link";
+import { deleteClientById } from "@/lib/actions";
+import { toast } from "@/components/ui/use-toast";
+
+async function onDelete(clientId: string) {
+  await deleteClientById(clientId);
+  toast({
+    description: (
+      <div className="flex items-center gap-3">
+        <div className="text-primary">
+          <CircleCheck className="h-6 w-6" />
+        </div>
+        <span>Dados do cliente excluídos com sucesso!</span>
+      </div>
+    ),
+  });
+}
 
 export const columns: ColumnDef<Client>[] = [
   {
@@ -109,52 +137,77 @@ export const columns: ColumnDef<Client>[] = [
     header: "",
     cell: ({ row }) => {
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild className="px-4">
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Abrir menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>
-              <Link
-                href={`/app/clients/${row.original.id}`}
-                className="flex w-full items-center"
-              >
+        <AlertDialog>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild className="px-4">
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Abrir menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem>
+                <Link
+                  href={`/app/clients/${row.original.id}`}
+                  className="flex w-full items-center"
+                >
+                  <Eye className="mr-2 h-4 w-4" />
+                  <span>Ver cliente</span>
+                </Link>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem>
+                <Link
+                  href={`/app/clients/${row.original.id}/edit`}
+                  className="flex w-full items-center"
+                >
+                  <SquarePen className="mr-2 h-4 w-4" />
+                  <span>Editar cliente</span>
+                </Link>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem>
+                <AlertDialogTrigger asChild>
+                  <div className="flex w-full cursor-pointer items-center">
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    <span>Excluir cliente</span>
+                  </div>
+                </AlertDialogTrigger>
+              </DropdownMenuItem>
+
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem>
                 <Eye className="mr-2 h-4 w-4" />
-                <span>Ver cliente</span>
-              </Link>
-            </DropdownMenuItem>
+                <span>Ver avaliações</span>
+              </DropdownMenuItem>
 
-            <DropdownMenuItem>
-              <Link
-                href={`/app/clients/${row.original.id}/edit`}
-                className="flex w-full items-center"
+              <DropdownMenuItem>
+                <Ruler className="mr-2 h-4 w-4" />
+                <span>Nova avaliação</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Essa ação não pode ser desfeita. O registro deste cliente será
+                permanentemente excluído de nossos servidores.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+              <AlertDialogAction
+                variant="destructive"
+                onClick={() => onDelete(row.original.id!)}
               >
-                <SquarePen className="mr-2 h-4 w-4" />
-                <span>Editar cliente</span>
-              </Link>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem>
-              <Trash2 className="mr-2 h-4 w-4" />
-              <span>Excluir cliente</span>
-            </DropdownMenuItem>
-
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem>
-              <Eye className="mr-2 h-4 w-4" />
-              <span>Ver avaliações</span>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem>
-              <Ruler className="mr-2 h-4 w-4" />
-              <span>Nova avaliação</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+                Excluir
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       );
     },
   },
