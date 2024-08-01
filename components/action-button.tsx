@@ -31,7 +31,7 @@ export default function ActionButton({ type, clientId }: ButtonCreateProps) {
   switch (type) {
     case "createClient":
       component = (
-        <Link href={"/app/clients/new"}>
+        <Link href="/app/clients/new">
           <Users className="mr-2 h-4 w-4" />
           <span>Novo cliente</span>
         </Link>
@@ -80,7 +80,7 @@ export default function ActionButton({ type, clientId }: ButtonCreateProps) {
 
     case "createEvaluation":
       component = (
-        <Link href="#">
+        <Link href="/app/evaluations/new">
           <Ruler className="mr-2 h-4 w-4" />
           <span>Nova avaliação</span>
         </Link>
