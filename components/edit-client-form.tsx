@@ -31,7 +31,7 @@ import { format } from "date-fns";
 import { CalendarIcon, CircleCheck } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { createClient, updateClientById } from "@/lib/actions";
+import { updateClientById } from "@/lib/actions";
 import { Client, clientSchema } from "@/lib/schema";
 import { useToast } from "@/components/ui/use-toast";
 
