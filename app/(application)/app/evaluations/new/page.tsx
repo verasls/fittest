@@ -17,6 +17,7 @@ import {
   StepsTrigger,
 } from "@/components/ui/steps";
 import { Separator } from "@/components/ui/separator";
+import SelectClientForm from "@/components/select-client-form";
 
 export default function Page() {
   return (
@@ -96,7 +97,9 @@ export default function Page() {
                 </StepsTrigger>
               </StepsList>
             </div>
-            <StepsContent value="client">Selecionar cliente</StepsContent>
+            <StepsContent value="client">
+              <SelectClientForm />
+            </StepsContent>
             <StepsContent value="anamnesis">Anamnese</StepsContent>
             <StepsContent value="perimeters">Perímetros</StepsContent>
             <StepsContent value="skinfolds">Dobras cutâneas</StepsContent>

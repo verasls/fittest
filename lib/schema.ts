@@ -24,3 +24,12 @@ export const clientSchema = z.object({
 });
 
 export type Client = z.infer<typeof clientSchema>;
+
+export const evaluationSchema = z.object({
+  id: z.string().optional(),
+  createdAt: z.date().optional(),
+  clientId: z.string(),
+  date: z.date({ message: "Por favor, inclua uma data de nascimento" }),
+});
+
+export type Evaluation = z.infer<typeof evaluationSchema>;
