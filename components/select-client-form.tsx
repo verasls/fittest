@@ -50,7 +50,7 @@ export default function SelectClientForm({ clients }: SelectClientFormProps) {
     resolver: zodResolver(evaluationSchema),
     defaultValues: {
       clientId: "",
-      date: undefined,
+      date: new Date(),
     },
   });
 

@@ -28,7 +28,7 @@ export type Client = z.infer<typeof clientSchema>;
 export const evaluationSchema = z.object({
   id: z.string().optional(),
   createdAt: z.date().optional(),
-  clientId: z.string(),
+  clientId: z.string().min(1, { message: "Por favor, selecione um cliente" }),
   date: z.date({ message: "Por favor, inclua a data da avaliação" }),
 });
 
