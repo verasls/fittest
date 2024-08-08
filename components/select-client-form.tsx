@@ -1,6 +1,5 @@
 "use client";
 
-import { Steps } from "@/components/new-evaluation-form";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -31,6 +30,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useNewEvaluationForm } from "@/context/NewEvaluationFormContext";
 import { Client, Evaluation, evaluationSchema } from "@/lib/schema";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -42,14 +42,12 @@ import { z } from "zod";
 
 type SelectClientFormProps = {
   clients: Array<Client>;
-  handleNextStep: (value: Steps) => void;
 };
 
-export default function SelectClientForm({
-  clients,
-  handleNextStep,
-}: SelectClientFormProps) {
-  const [open, setOpen] = useState(false);
+export default function SelectClientForm({ clients }: SelectClientFormProps) {
+  const { dispatch } = useNewEvaluationForm();
+
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const form = useForm<z.infer<typeof evaluationSchema>>({
     resolver: zodResolver(evaluationSchema),
@@ -61,7 +59,7 @@ export default function SelectClientForm({
 
   function onSubmit(values: Evaluation) {
     console.log(values);
-    handleNextStep("anamnesis");
+    dispatch({ type: "goToNextStep", payload: "anamnesis" });
   }
 
   return (
@@ -85,7 +83,7 @@ export default function SelectClientForm({
               render={({ field }) => (
                 <FormItem className="flex w-full flex-col">
                   <FormLabel>Cliente*</FormLabel>
-                  <Popover open={open} onOpenChange={setOpen}>
+                  <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
@@ -114,7 +112,7 @@ export default function SelectClientForm({
                                 key={client.id!}
                                 onSelect={() => {
                                   form.setValue("clientId", client.id!);
-                                  setOpen(false);
+                                  setIsPopoverOpen(false);
                                 }}
                                 className={cn(
                                   client.id! === field.value ? "bg-muted" : ""

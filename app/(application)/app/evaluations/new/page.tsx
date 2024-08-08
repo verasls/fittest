@@ -1,3 +1,4 @@
+import Providers from "@/app/(application)/app/evaluations/Providers";
 import NewEvaluationForm from "@/components/new-evaluation-form";
 import {
   Breadcrumb,
@@ -34,7 +35,9 @@ export default async function Page() {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <NewEvaluationForm clients={sortedClients} />
+      <Providers>
+        <NewEvaluationForm clients={sortedClients} />
+      </Providers>
     </>
   );
 }

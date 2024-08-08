@@ -12,24 +12,20 @@ import {
 import { Separator } from "@/components/ui/separator";
 import SelectClientForm from "@/components/select-client-form";
 import { Client } from "@/lib/schema";
-import { useState } from "react";
+import {
+  Steps as StepsType,
+  useNewEvaluationForm,
+} from "@/context/NewEvaluationFormContext";
 
 type NewEvaluationFormProps = {
   clients: Array<Client>;
 };
 
-export type Steps =
-  | "client"
-  | "anamnesis"
-  | "perimeters"
-  | "skinfolds"
-  | "observations";
-
 export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
-  const [step, setStep] = useState<Steps>("client");
+  const { state, dispatch } = useNewEvaluationForm();
 
-  function onStepChange(value: Steps) {
-    setStep(value);
+  function onStepChange(value: StepsType) {
+    dispatch({ type: "goToNextStep", payload: value });
   }
 
   return (
@@ -38,7 +34,7 @@ export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
         <Heading type="h2">Adicionar nova avaliação</Heading>
 
         <Steps
-          value={step}
+          value={state.currentStep}
           onValueChange={onStepChange as (value: string) => void}
         >
           <div className="flex items-center justify-center">
@@ -93,7 +89,7 @@ export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
             </StepsList>
           </div>
           <StepsContent value="client">
-            <SelectClientForm clients={clients} handleNextStep={onStepChange} />
+            <SelectClientForm clients={clients} />
           </StepsContent>
           <StepsContent value="anamnesis">Anamnese</StepsContent>
           <StepsContent value="perimeters">Perímetros</StepsContent>
