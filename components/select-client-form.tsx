@@ -1,5 +1,6 @@
 "use client";
 
+import { Steps } from "@/components/new-evaluation-form";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -41,9 +42,13 @@ import { z } from "zod";
 
 type SelectClientFormProps = {
   clients: Array<Client>;
+  handleNextStep: (value: Steps) => void;
 };
 
-export default function SelectClientForm({ clients }: SelectClientFormProps) {
+export default function SelectClientForm({
+  clients,
+  handleNextStep,
+}: SelectClientFormProps) {
   const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof evaluationSchema>>({
@@ -56,6 +61,7 @@ export default function SelectClientForm({ clients }: SelectClientFormProps) {
 
   function onSubmit(values: Evaluation) {
     console.log(values);
+    handleNextStep("anamnesis");
   }
 
   return (
