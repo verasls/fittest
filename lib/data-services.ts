@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import { clientSchema } from "@/lib/schema";
+import { Client, clientSchema } from "@/lib/schema";
 import { supabase } from "@/lib/supabase";
 
 export async function getUser(email: string) {
@@ -25,7 +25,7 @@ export async function createNewUser(newUser: User) {
   return data;
 }
 
-export async function readClientById(clientId: string) {
+export async function readClientById(clientId: string): Promise<Client> {
   const session = await auth();
   if (!session) throw new Error("Você precisa estar autenticado");
 
@@ -60,7 +60,7 @@ export async function readClientById(clientId: string) {
   return client;
 }
 
-export async function readAllClients() {
+export async function readAllClients(): Promise<Array<Client>> {
   const session = await auth();
   if (!session) throw new Error("Você precisa estar autenticado");
 

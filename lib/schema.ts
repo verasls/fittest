@@ -29,7 +29,7 @@ export const evaluationSchema = z.object({
   id: z.string().optional(),
   createdAt: z.date().optional(),
   clientId: z.string(),
-  date: z.date({ message: "Por favor, inclua uma data de nascimento" }),
+  date: z.date({ message: "Por favor, inclua a data da avaliação" }),
 });
 
 export type Evaluation = z.infer<typeof evaluationSchema>;

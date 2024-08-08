@@ -1,5 +1,3 @@
-"use client";
-
 import { Heading } from "@/components/ui/heading";
 import {
   Breadcrumb,
@@ -18,8 +16,12 @@ import {
 } from "@/components/ui/steps";
 import { Separator } from "@/components/ui/separator";
 import SelectClientForm from "@/components/select-client-form";
+import { readAllClients } from "@/lib/data-services";
 
-export default function Page() {
+export default async function Page() {
+  const clients = await readAllClients();
+  const sortedClients = clients.sort((a, b) => a.name.localeCompare(b.name));
+
   return (
     <>
       <Breadcrumb className="mb-6">
@@ -98,7 +100,7 @@ export default function Page() {
               </StepsList>
             </div>
             <StepsContent value="client">
-              <SelectClientForm />
+              <SelectClientForm clients={sortedClients} />
             </StepsContent>
             <StepsContent value="anamnesis">Anamnese</StepsContent>
             <StepsContent value="perimeters">Perímetros</StepsContent>

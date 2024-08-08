@@ -30,15 +30,22 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Evaluation, evaluationSchema } from "@/lib/schema";
+import { Client, Evaluation, evaluationSchema } from "@/lib/schema";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { CalendarIcon, ChevronsUpDown } from "lucide-react";
+import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-export default function SelectClientForm() {
+type SelectClientFormProps = {
+  clients: Array<Client>;
+};
+
+export default function SelectClientForm({ clients }: SelectClientFormProps) {
+  const [open, setOpen] = useState(false);
+
   const form = useForm<z.infer<typeof evaluationSchema>>({
     resolver: zodResolver(evaluationSchema),
     defaultValues: {
@@ -56,8 +63,8 @@ export default function SelectClientForm() {
       <CardHeader>
         <CardTitle>Selecionar cliente</CardTitle>
         <CardDescription>
-          <p>Preencha as informações abaixo para adicionar um novo cliente.</p>
-          <p>Os campos marcados (*) são obrigatórios.</p>
+          Preencha as informações abaixo para adicionar um novo cliente. <br />
+          Os campos marcados (*) são obrigatórios.
         </CardDescription>
       </CardHeader>
       <CardContent className="pt-6">
@@ -72,10 +79,19 @@ export default function SelectClientForm() {
               render={({ field }) => (
                 <FormItem className="flex w-full flex-col">
                   <FormLabel>Cliente*</FormLabel>
-                  <Popover>
+                  <Popover open={open} onOpenChange={setOpen}>
                     <PopoverTrigger asChild>
                       <FormControl>
-                        <Button variant="outline" role="combobox">
+                        <Button
+                          variant="outline"
+                          className="font-normal"
+                          role="combobox"
+                        >
+                          {field.value
+                            ? clients.find(
+                                (client) => client.id! === field.value
+                              )?.name
+                            : ""}
                           <ChevronsUpDown className="ml-auto h-4 w-4 opacity-50" />
                         </Button>
                       </FormControl>
@@ -86,7 +102,29 @@ export default function SelectClientForm() {
                         <CommandList>
                           <CommandEmpty>Nenhum cliente encontrado</CommandEmpty>
                           <CommandGroup>
-                            <CommandItem>Lucas</CommandItem>
+                            {clients.map((client) => (
+                              <CommandItem
+                                value={client.name}
+                                key={client.id!}
+                                onSelect={() => {
+                                  form.setValue("clientId", client.id!);
+                                  setOpen(false);
+                                }}
+                                className={cn(
+                                  client.id! === field.value ? "bg-muted" : ""
+                                )}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    client.id! === field.value
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                {client.name}
+                              </CommandItem>
+                            ))}
                           </CommandGroup>
                         </CommandList>
                       </Command>
