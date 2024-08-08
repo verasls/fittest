@@ -1,4 +1,4 @@
-import CreateClientForm from "@/components/create-client-form";
+import NewClientForm from "@/components/new-client-form";
 import { Heading } from "@/components/ui/heading";
 import {
   Breadcrumb,
@@ -45,7 +45,7 @@ export default async function Page() {
             <p className="text-sm">Os campos marcados (*) são obrigatórios.</p>
           </div>
         </div>
-        <CreateClientForm userId={userId} />
+        <NewClientForm userId={userId} />
       </div>
     </>
   );

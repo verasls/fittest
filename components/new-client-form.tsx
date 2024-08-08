@@ -35,11 +35,11 @@ import { createClient } from "@/lib/actions";
 import { Client, clientSchema } from "@/lib/schema";
 import { useToast } from "@/components/ui/use-toast";
 
-type CreateClientFormProps = {
+type NewClientFormProps = {
   userId: string;
 };
 
-export default function CreateClientForm({ userId }: CreateClientFormProps) {
+export default function NewClientForm({ userId }: NewClientFormProps) {
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof clientSchema>>({
