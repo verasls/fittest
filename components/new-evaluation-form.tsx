@@ -2,18 +2,18 @@
 
 import { Heading } from "@/components/ui/heading";
 import {
-  Steps,
-  StepsButton,
-  StepsContent,
-  StepsLabel,
-  StepsList,
-  StepsTrigger,
-} from "@/components/ui/steps";
+  Stepper,
+  StepperButton,
+  StepperContent,
+  StepperLabel,
+  StepperList,
+  StepperTrigger,
+} from "@/components/ui/stepper";
 import { Separator } from "@/components/ui/separator";
 import SelectClientForm from "@/components/select-client-form";
 import { Client } from "@/lib/schema";
 import {
-  Steps as StepsType,
+  Steps,
   useNewEvaluationForm,
 } from "@/context/NewEvaluationFormContext";
 
@@ -24,7 +24,7 @@ type NewEvaluationFormProps = {
 export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
   const { state, dispatch } = useNewEvaluationForm();
 
-  function onStepChange(value: StepsType) {
+  function onStepChange(value: Steps) {
     dispatch({ type: "goToNextStep", payload: value });
   }
 
@@ -33,69 +33,69 @@ export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
       <div className="flex flex-col gap-2">
         <Heading type="h2">Adicionar nova avaliação</Heading>
 
-        <Steps
+        <Stepper
           value={state.currentStep}
           onValueChange={onStepChange as (value: string) => void}
         >
           <div className="flex items-center justify-center">
-            <StepsList className="pb-16 pt-10">
-              <StepsTrigger
+            <StepperList className="pb-16 pt-10">
+              <StepperTrigger
                 value="client"
                 className="group relative flex flex-col"
               >
-                <StepsButton>1</StepsButton>
-                <StepsLabel>Cliente</StepsLabel>
-              </StepsTrigger>
+                <StepperButton>1</StepperButton>
+                <StepperLabel>Cliente</StepperLabel>
+              </StepperTrigger>
 
               <Separator className="w-24" />
 
-              <StepsTrigger
+              <StepperTrigger
                 value="anamnesis"
                 className="group relative flex flex-col"
               >
-                <StepsButton>2</StepsButton>
-                <StepsLabel>Anamnese</StepsLabel>
-              </StepsTrigger>
+                <StepperButton>2</StepperButton>
+                <StepperLabel>Anamnese</StepperLabel>
+              </StepperTrigger>
 
               <Separator className="w-24" />
 
-              <StepsTrigger
+              <StepperTrigger
                 value="perimeters"
                 className="group relative flex flex-col"
               >
-                <StepsButton>3</StepsButton>
-                <StepsLabel>Perímetros</StepsLabel>
-              </StepsTrigger>
+                <StepperButton>3</StepperButton>
+                <StepperLabel>Perímetros</StepperLabel>
+              </StepperTrigger>
 
               <Separator className="w-24" />
 
-              <StepsTrigger
+              <StepperTrigger
                 value="skinfolds"
                 className="group relative flex flex-col"
               >
-                <StepsButton>4</StepsButton>
-                <StepsLabel>Dobras cutâneas</StepsLabel>
-              </StepsTrigger>
+                <StepperButton>4</StepperButton>
+                <StepperLabel>Dobras cutâneas</StepperLabel>
+              </StepperTrigger>
 
               <Separator className="w-24" />
 
-              <StepsTrigger
+              <StepperTrigger
                 value="observations"
                 className="group relative flex flex-col"
               >
-                <StepsButton>5</StepsButton>
-                <StepsLabel>Observações</StepsLabel>
-              </StepsTrigger>
-            </StepsList>
+                <StepperButton>5</StepperButton>
+                <StepperLabel>Observações</StepperLabel>
+              </StepperTrigger>
+            </StepperList>
           </div>
-          <StepsContent value="client">
+          <StepperContent value="client">
             <SelectClientForm clients={clients} />
-          </StepsContent>
-          <StepsContent value="anamnesis">Anamnese</StepsContent>
-          <StepsContent value="perimeters">Perímetros</StepsContent>
-          <StepsContent value="skinfolds">Dobras cutâneas</StepsContent>
-          <StepsContent value="observations">Observações</StepsContent>
-        </Steps>
+          </StepperContent>
+          <StepperContent value="anamnesis">Anamnese</StepperContent>
+          <StepperContent value="perimeters">Perímetros</StepperContent>
+          <StepperContent value="skinfolds">Dobras cutâneas</StepperContent>
+          <StepperContent value="observations">Observações</StepperContent>
+        </Stepper>
       </div>
     </div>
   );

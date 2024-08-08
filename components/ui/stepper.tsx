@@ -5,9 +5,9 @@ import * as TabsPrimitive from "@radix-ui/react-tabs";
 
 import { cn } from "@/lib/utils";
 
-const Steps = TabsPrimitive.Root;
+const Stepper = TabsPrimitive.Root;
 
-const StepsList = React.forwardRef<
+const StepperList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
 >(({ className, ...props }, ref) => (
@@ -20,9 +20,9 @@ const StepsList = React.forwardRef<
     {...props}
   />
 ));
-StepsList.displayName = TabsPrimitive.List.displayName;
+StepperList.displayName = TabsPrimitive.List.displayName;
 
-const StepsTrigger = React.forwardRef<
+const StepperTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
 >(({ className, ...props }, ref) => (
@@ -35,13 +35,13 @@ const StepsTrigger = React.forwardRef<
     {...props}
   />
 ));
-StepsTrigger.displayName = TabsPrimitive.Trigger.displayName;
+StepperTrigger.displayName = TabsPrimitive.Trigger.displayName;
 
-interface StepsButtonProps extends React.ComponentPropsWithoutRef<"span"> {
+interface StepperButtonProps extends React.ComponentPropsWithoutRef<"span"> {
   children: React.ReactNode;
 }
 
-const StepsButton: React.FC<StepsButtonProps> = ({
+const StepperButton: React.FC<StepperButtonProps> = ({
   children,
   className,
   ...props
@@ -57,11 +57,11 @@ const StepsButton: React.FC<StepsButtonProps> = ({
   </span>
 );
 
-interface StepsLabelProps extends React.ComponentPropsWithoutRef<"span"> {
+interface StepperLabelProps extends React.ComponentPropsWithoutRef<"span"> {
   children: React.ReactNode;
 }
 
-const StepsLabel: React.FC<StepsLabelProps> = ({
+const StepperLabel: React.FC<StepperLabelProps> = ({
   children,
   className,
   ...props
@@ -77,7 +77,7 @@ const StepsLabel: React.FC<StepsLabelProps> = ({
   </span>
 );
 
-const StepsContent = React.forwardRef<
+const StepperContent = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
 >(({ className, ...props }, ref) => (
@@ -90,13 +90,13 @@ const StepsContent = React.forwardRef<
     {...props}
   />
 ));
-StepsContent.displayName = TabsPrimitive.Content.displayName;
+StepperContent.displayName = TabsPrimitive.Content.displayName;
 
 export {
-  Steps,
-  StepsList,
-  StepsTrigger,
-  StepsButton,
-  StepsLabel,
-  StepsContent,
+  Stepper,
+  StepperList,
+  StepperTrigger,
+  StepperButton,
+  StepperLabel,
+  StepperContent,
 };
