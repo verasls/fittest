@@ -45,20 +45,20 @@ type SelectClientFormProps = {
 };
 
 export default function SelectClientForm({ clients }: SelectClientFormProps) {
-  const { dispatch } = useNewEvaluationForm();
-
+  const { state, dispatch } = useNewEvaluationForm();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const selectClientState = state.formState
+    .filter((form) => form.step === "client")
+    .at(0)!.state;
 
   const form = useForm<z.infer<typeof evaluationSchema>>({
     resolver: zodResolver(evaluationSchema),
-    defaultValues: {
-      clientId: "",
-      date: new Date(),
-    },
+    defaultValues: selectClientState,
   });
 
   function onSubmit(values: Evaluation) {
     console.log(values);
+    dispatch({ type: "saveFormData", payload: values });
     dispatch({ type: "goToNextStep", payload: "anamnesis" });
   }
 
@@ -179,7 +179,7 @@ export default function SelectClientForm({ clients }: SelectClientFormProps) {
             />
 
             <div className="col-start-2 flex justify-end pt-4">
-              <Button type="submit">Próximo</Button>
+              <Button>Próximo</Button>
             </div>
           </form>
         </Form>

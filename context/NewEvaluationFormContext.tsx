@@ -1,3 +1,4 @@
+import { Evaluation } from "@/lib/schema";
 import { createContext, useContext, useReducer } from "react";
 
 export type Steps =
@@ -9,18 +10,34 @@ export type Steps =
 
 type State = {
   currentStep: Steps;
+  formState: {
+    step: Steps;
+    state: Evaluation;
+  }[];
 };
 
 const initialState: State = {
   currentStep: "client",
+  formState: [{ step: "client", state: { clientId: "", date: new Date() } }],
 };
 
-type Action = { type: "goToNextStep"; payload: Steps };
+type Action =
+  | { type: "goToNextStep"; payload: Steps }
+  | { type: "saveFormData"; payload: Evaluation };
 
 function reducer(state: State, action: Action) {
   switch (action.type) {
     case "goToNextStep":
       return { ...state, currentStep: action.payload };
+
+    case "saveFormData":
+      const updatedFormState = state.formState.map((form) =>
+        form.step === state.currentStep
+          ? { ...form, state: action.payload }
+          : form
+      );
+
+      return { ...state, formState: updatedFormState };
 
     default:
       throw new Error("Unkown action");
