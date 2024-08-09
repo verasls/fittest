@@ -11,11 +11,14 @@ import {
 } from "@/components/ui/stepper";
 import { Separator } from "@/components/ui/separator";
 import SelectClientForm from "@/components/select-client-form";
-import { Client } from "@/lib/schema";
+import { Client, evaluationSchema } from "@/lib/schema";
 import {
   Steps,
   useNewEvaluationForm,
 } from "@/context/NewEvaluationFormContext";
+import { useRef } from "react";
+import { UseFormReturn } from "react-hook-form";
+import { z } from "zod";
 
 type NewEvaluationFormProps = {
   clients: Array<Client>;
@@ -23,8 +26,16 @@ type NewEvaluationFormProps = {
 
 export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
   const { state, dispatch } = useNewEvaluationForm();
+  const formRef = useRef<UseFormReturn<
+    z.infer<typeof evaluationSchema>
+  > | null>(null);
 
   function onStepChange(value: Steps) {
+    if (formRef.current) {
+      const formData = formRef.current.getValues();
+      dispatch({ type: "saveFormData", payload: formData });
+    }
+
     dispatch({ type: "goToNextStep", payload: value });
   }
 
@@ -89,7 +100,7 @@ export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
             </StepperList>
           </div>
           <StepperContent value="client">
-            <SelectClientForm clients={clients} />
+            <SelectClientForm clients={clients} formRef={formRef} />
           </StepperContent>
           <StepperContent value="anamnesis">Anamnese</StepperContent>
           <StepperContent value="perimeters">Perímetros</StepperContent>

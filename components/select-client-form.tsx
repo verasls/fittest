@@ -36,15 +36,21 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 
 type SelectClientFormProps = {
   clients: Array<Client>;
+  formRef: React.MutableRefObject<UseFormReturn<
+    z.infer<typeof evaluationSchema>
+  > | null>;
 };
 
-export default function SelectClientForm({ clients }: SelectClientFormProps) {
+export default function SelectClientForm({
+  clients,
+  formRef,
+}: SelectClientFormProps) {
   const { state, dispatch } = useNewEvaluationForm();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const selectClientState = state.formState
@@ -56,8 +62,9 @@ export default function SelectClientForm({ clients }: SelectClientFormProps) {
     defaultValues: selectClientState,
   });
 
+  formRef.current = form;
+
   function onSubmit(values: Evaluation) {
-    console.log(values);
     dispatch({ type: "saveFormData", payload: values });
     dispatch({ type: "goToNextStep", payload: "anamnesis" });
   }
