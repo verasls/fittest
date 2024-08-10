@@ -55,7 +55,9 @@ export default function SelectClientForm({
   formRef,
 }: SelectClientFormProps) {
   const { state, dispatch } = useNewEvaluationForm();
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [isComboboxPopoverOpen, setIsComboboxPopoverOpen] = useState(false);
+  const [isCalendarPopoverOpen, setIsCalendarPopoverOpen] = useState(false);
+
   const selectClientState = state.formState
     .filter((form) => form.step === "client")
     .at(0)!.state;
@@ -97,7 +99,10 @@ export default function SelectClientForm({
               render={({ field }) => (
                 <FormItem className="flex w-full flex-col">
                   <FormLabel>Cliente*</FormLabel>
-                  <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+                  <Popover
+                    open={isComboboxPopoverOpen}
+                    onOpenChange={setIsComboboxPopoverOpen}
+                  >
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
@@ -126,7 +131,7 @@ export default function SelectClientForm({
                                 key={client.id!}
                                 onSelect={() => {
                                   form.setValue("clientId", client.id!);
-                                  setIsPopoverOpen(false);
+                                  setIsComboboxPopoverOpen(false);
                                 }}
                                 className={cn(
                                   client.id! === field.value ? "bg-muted" : ""
@@ -159,7 +164,10 @@ export default function SelectClientForm({
               render={({ field }) => (
                 <FormItem className="flex w-full flex-col">
                   <FormLabel>Data da avaliação*</FormLabel>
-                  <Popover>
+                  <Popover
+                    open={isCalendarPopoverOpen}
+                    onOpenChange={setIsCalendarPopoverOpen}
+                  >
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
@@ -178,7 +186,10 @@ export default function SelectClientForm({
                       <Calendar
                         mode="single"
                         selected={field.value}
-                        onSelect={field.onChange}
+                        onSelect={(date) => {
+                          field.onChange(date);
+                          setIsCalendarPopoverOpen(false);
+                        }}
                         disabled={(date) => date > new Date()}
                         fromYear={1900}
                         toYear={new Date().getFullYear()}

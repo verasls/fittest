@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Card } from "@/components/ui/card";
@@ -40,6 +40,7 @@ type NewClientFormProps = {
 };
 
 export default function NewClientForm({ userId }: NewClientFormProps) {
+  const [isCalendarPopoverOpen, setIsCalendarPopoverOpen] = useState(false);
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof clientSchema>>({
@@ -206,7 +207,10 @@ export default function NewClientForm({ userId }: NewClientFormProps) {
             render={({ field }) => (
               <FormItem className="flex w-full flex-col">
                 <FormLabel>Data de nascimento*</FormLabel>
-                <Popover>
+                <Popover
+                  open={isCalendarPopoverOpen}
+                  onOpenChange={setIsCalendarPopoverOpen}
+                >
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
@@ -225,7 +229,10 @@ export default function NewClientForm({ userId }: NewClientFormProps) {
                     <Calendar
                       mode="single"
                       selected={field.value}
-                      onSelect={field.onChange}
+                      onSelect={(date) => {
+                        field.onChange(date);
+                        setIsCalendarPopoverOpen(false);
+                      }}
                       disabled={(date) => date > new Date()}
                       fromYear={1900}
                       toYear={new Date().getFullYear()}
