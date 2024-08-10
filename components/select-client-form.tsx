@@ -30,8 +30,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useNewEvaluationForm } from "@/context/NewEvaluationFormContext";
-import { Client, Evaluation, evaluationSchema } from "@/lib/schema";
+import {
+  Steps,
+  useNewEvaluationForm,
+} from "@/context/NewEvaluationFormContext";
+import { Client, evaluationSchema } from "@/lib/schema";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
@@ -61,12 +64,19 @@ export default function SelectClientForm({
     resolver: zodResolver(evaluationSchema),
     defaultValues: selectClientState,
   });
-
   formRef.current = form;
 
-  function onSubmit(values: Evaluation) {
+  async function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+    const buttonText = event.currentTarget.textContent;
+    let step: Steps;
+    if (buttonText === "Próximo") step = "anamnesis";
+    else throw new Error();
+
+    const isValid = await form.trigger();
+    const values = form.getValues();
+
+    if (isValid) dispatch({ type: "goToNextStep", payload: step });
     dispatch({ type: "saveFormData", payload: values });
-    dispatch({ type: "goToNextStep", payload: "anamnesis" });
   }
 
   return (
@@ -80,10 +90,7 @@ export default function SelectClientForm({
       </CardHeader>
       <CardContent className="pt-6">
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="grid grid-cols-2 gap-3"
-          >
+          <form className="grid grid-cols-2 gap-3">
             <FormField
               control={form.control}
               name="clientId"
@@ -186,7 +193,9 @@ export default function SelectClientForm({
             />
 
             <div className="col-start-2 flex justify-end pt-4">
-              <Button>Próximo</Button>
+              <Button type="button" onClick={handleClick}>
+                Próximo
+              </Button>
             </div>
           </form>
         </Form>
