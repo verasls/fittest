@@ -48,7 +48,7 @@ const StepperButton: React.FC<StepperButtonProps> = ({
 }) => (
   <span
     className={cn(
-      "flex h-6 w-6 items-center justify-center rounded-full text-sm font-medium group-data-[state=active]:bg-primary group-data-[state=inactive]:bg-secondary group-data-[state=active]:text-white",
+      "flex h-6 w-6 items-center justify-center rounded-full text-sm font-medium group-data-[state=active]:bg-primary group-data-[state=inactive]:bg-secondary group-data-[state=invalid]:bg-destructive group-data-[state=active]:text-white group-data-[state=invalid]:text-white",
       className
     )}
     {...props}

@@ -19,6 +19,7 @@ import {
 import { useRef } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
+import { CircleAlert } from "lucide-react";
 
 type NewEvaluationFormProps = {
   clients: Array<Client>;
@@ -30,13 +31,21 @@ export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
     z.infer<typeof evaluationSchema>
   > | null>(null);
 
-  function onStepChange(value: Steps) {
+  function handleStepChange(value: Steps) {
     if (formRef.current) {
       const formData = formRef.current.getValues();
       dispatch({ type: "updateFormValues", payload: formData });
     }
 
     dispatch({ type: "goToNextStep", payload: value });
+  }
+
+  function handleStepperState(value: Steps) {
+    const formData = state.formData.find((form) => form.step === value);
+
+    if (state.currentStep === value) return "active";
+    if (formData?.status.isValid === false) return "invalid";
+    return "inactive";
   }
 
   return (
@@ -46,15 +55,22 @@ export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
 
         <Stepper
           value={state.currentStep}
-          onValueChange={onStepChange as (value: string) => void}
+          onValueChange={handleStepChange as (value: string) => void}
         >
           <div className="flex items-center justify-center">
             <StepperList className="pb-16 pt-10">
               <StepperTrigger
                 value="client"
                 className="group relative flex flex-col"
+                data-state={handleStepperState("client")}
               >
-                <StepperButton>1</StepperButton>
+                <StepperButton>
+                  {handleStepperState("client") === "invalid" ? (
+                    <CircleAlert className="h-6 w-6" />
+                  ) : (
+                    "1"
+                  )}
+                </StepperButton>
                 <StepperLabel>Cliente</StepperLabel>
               </StepperTrigger>
 
