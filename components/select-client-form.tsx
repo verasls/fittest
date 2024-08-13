@@ -82,7 +82,7 @@ export default function SelectClientForm({
 
     dispatch({ type: "updateFormStatus", payload: status });
     dispatch({ type: "updateFormValues", payload: values });
-    if (isValid) dispatch({ type: "goToNextStep", payload: step });
+    dispatch({ type: "goToNextStep", payload: step });
   }
 
   return (
