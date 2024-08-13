@@ -1,12 +1,15 @@
 import { Evaluation } from "@/lib/schema";
-import { createContext, useContext, useReducer } from "react";
+import { parseAsStringLiteral, useQueryState } from "nuqs";
+import { createContext, useContext, useReducer, useEffect } from "react";
 
-export type Steps =
-  | "client"
-  | "anamnesis"
-  | "perimeters"
-  | "skinfolds"
-  | "observations";
+const steps = [
+  "client",
+  "anamnesis",
+  "perimeters",
+  "skinfolds",
+  "observations",
+] as const;
+export type Steps = (typeof steps)[number];
 
 type FormStatus = {
   isValid: boolean;
@@ -65,7 +68,7 @@ function reducer(state: State, action: Action) {
       return { ...state, formData: updatedStatus };
 
     default:
-      throw new Error("Unkown action");
+      throw new Error("Unknown action");
   }
 }
 
@@ -83,10 +86,32 @@ export function NewEvaluationFormProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [currentStep, setCurrentStep] = useQueryState(
+    "step",
+    parseAsStringLiteral(steps).withDefault("client")
+  );
+
+  const [state, dispatch] = useReducer(reducer, {
+    ...initialState,
+    currentStep,
+  });
+
+  useEffect(() => {
+    if (!currentStep || currentStep === "client") {
+      setCurrentStep("client");
+    }
+  }, [currentStep, setCurrentStep]);
+
+  const value = {
+    state,
+    dispatch: (action: Action) => {
+      if (action.type === "goToNextStep") setCurrentStep(action.payload);
+      dispatch(action);
+    },
+  };
 
   return (
-    <NewEvaluationFormContext.Provider value={{ state, dispatch }}>
+    <NewEvaluationFormContext.Provider value={value}>
       {children}
     </NewEvaluationFormContext.Provider>
   );
