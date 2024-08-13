@@ -16,7 +16,7 @@ import {
   Steps,
   useNewEvaluationForm,
 } from "@/context/NewEvaluationFormContext";
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { CircleAlert } from "lucide-react";
@@ -48,6 +48,30 @@ export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
     return "inactive";
   }
 
+  function getStepperButtonContent(step: Steps) {
+    const stepNumber = {
+      client: "1",
+      anamnesis: "2",
+      perimeters: "3",
+      skinfolds: "4",
+      observations: "5",
+    }[step];
+
+    return handleStepperState(step) === "invalid" ? (
+      <CircleAlert className="h-6 w-6" />
+    ) : (
+      stepNumber
+    );
+  }
+
+  const steps: Array<{ value: Steps; label: string }> = [
+    { value: "client", label: "Cliente" },
+    { value: "anamnesis", label: "Anamnese" },
+    { value: "perimeters", label: "Perímetros" },
+    { value: "skinfolds", label: "Dobras cutâneas" },
+    { value: "observations", label: "Observações" },
+  ];
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
@@ -59,60 +83,21 @@ export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
         >
           <div className="flex items-center justify-center">
             <StepperList className="pb-16 pt-10">
-              <StepperTrigger
-                value="client"
-                className="group relative flex flex-col"
-                data-state={handleStepperState("client")}
-              >
-                <StepperButton>
-                  {handleStepperState("client") === "invalid" ? (
-                    <CircleAlert className="h-6 w-6" />
-                  ) : (
-                    "1"
-                  )}
-                </StepperButton>
-                <StepperLabel>Cliente</StepperLabel>
-              </StepperTrigger>
-
-              <Separator className="w-24" />
-
-              <StepperTrigger
-                value="anamnesis"
-                className="group relative flex flex-col"
-              >
-                <StepperButton>2</StepperButton>
-                <StepperLabel>Anamnese</StepperLabel>
-              </StepperTrigger>
-
-              <Separator className="w-24" />
-
-              <StepperTrigger
-                value="perimeters"
-                className="group relative flex flex-col"
-              >
-                <StepperButton>3</StepperButton>
-                <StepperLabel>Perímetros</StepperLabel>
-              </StepperTrigger>
-
-              <Separator className="w-24" />
-
-              <StepperTrigger
-                value="skinfolds"
-                className="group relative flex flex-col"
-              >
-                <StepperButton>4</StepperButton>
-                <StepperLabel>Dobras cutâneas</StepperLabel>
-              </StepperTrigger>
-
-              <Separator className="w-24" />
-
-              <StepperTrigger
-                value="observations"
-                className="group relative flex flex-col"
-              >
-                <StepperButton>5</StepperButton>
-                <StepperLabel>Observações</StepperLabel>
-              </StepperTrigger>
+              {steps.map((step, index) => (
+                <React.Fragment key={step.value}>
+                  {index > 0 && <Separator className="w-24" />}
+                  <StepperTrigger
+                    value={step.value}
+                    className="group relative flex flex-col"
+                    data-state={handleStepperState(step.value)}
+                  >
+                    <StepperButton>
+                      {getStepperButtonContent(step.value)}
+                    </StepperButton>
+                    <StepperLabel>{step.label}</StepperLabel>
+                  </StepperTrigger>
+                </React.Fragment>
+              ))}
             </StepperList>
           </div>
           <StepperContent value="client">
