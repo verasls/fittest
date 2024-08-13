@@ -33,7 +33,7 @@ export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
   function onStepChange(value: Steps) {
     if (formRef.current) {
       const formData = formRef.current.getValues();
-      dispatch({ type: "saveFormData", payload: formData });
+      dispatch({ type: "updateFormValues", payload: formData });
     }
 
     dispatch({ type: "goToNextStep", payload: value });

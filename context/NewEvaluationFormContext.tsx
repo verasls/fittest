@@ -8,36 +8,61 @@ export type Steps =
   | "skinfolds"
   | "observations";
 
+type FormStatus = {
+  isValid: boolean;
+  isDirty: boolean;
+};
+
 type State = {
   currentStep: Steps;
-  formState: {
+  formData: {
     step: Steps;
-    state: Evaluation;
+    status: FormStatus;
+    values: Evaluation;
   }[];
 };
 
 const initialState: State = {
   currentStep: "client",
-  formState: [{ step: "client", state: { clientId: "", date: new Date() } }],
+  formData: [
+    {
+      step: "client",
+      status: { isValid: false, isDirty: false },
+      values: { clientId: "", date: new Date() },
+    },
+  ],
 };
 
 type Action =
   | { type: "goToNextStep"; payload: Steps }
-  | { type: "saveFormData"; payload: Evaluation };
+  | { type: "updateFormValues"; payload: Evaluation }
+  | { type: "updateFormStatus"; payload: FormStatus };
 
 function reducer(state: State, action: Action) {
   switch (action.type) {
     case "goToNextStep":
       return { ...state, currentStep: action.payload };
 
-    case "saveFormData":
-      const updatedFormState = state.formState.map((form) =>
-        form.step === state.currentStep
-          ? { ...form, state: action.payload }
-          : form
+    case "updateFormValues":
+      const updatedValues = state.formData.map((data) =>
+        data.step === state.currentStep
+          ? { ...data, values: action.payload }
+          : data
       );
 
-      return { ...state, formState: updatedFormState };
+      return {
+        ...state,
+        formData: updatedValues,
+      };
+
+    case "updateFormStatus":
+      const updatedStatus = state.formData.map((data) =>
+        data.step === state.currentStep
+          ? { ...data, status: action.payload }
+          : data
+      );
+
+      return { ...state, formData: updatedStatus };
 
     default:
       throw new Error("Unkown action");

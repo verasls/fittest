@@ -58,9 +58,9 @@ export default function SelectClientForm({
   const [isComboboxPopoverOpen, setIsComboboxPopoverOpen] = useState(false);
   const [isCalendarPopoverOpen, setIsCalendarPopoverOpen] = useState(false);
 
-  const selectClientState = state.formState
+  const selectClientState = state.formData
     .filter((form) => form.step === "client")
-    .at(0)!.state;
+    .at(0)!.values;
 
   const form = useForm<z.infer<typeof evaluationSchema>>({
     resolver: zodResolver(evaluationSchema),
@@ -76,9 +76,13 @@ export default function SelectClientForm({
 
     const isValid = await form.trigger();
     const values = form.getValues();
+    const isDirty =
+      JSON.stringify(values) !== JSON.stringify(selectClientState);
+    const status = { isValid, isDirty };
 
+    dispatch({ type: "updateFormStatus", payload: status });
+    dispatch({ type: "updateFormValues", payload: values });
     if (isValid) dispatch({ type: "goToNextStep", payload: step });
-    dispatch({ type: "saveFormData", payload: values });
   }
 
   return (
