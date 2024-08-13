@@ -180,6 +180,7 @@ export default function SelectClientForm({
                             "text-left font-normal",
                             !field.value && "text-muted-foreground"
                           )}
+                          suppressHydrationWarning
                         >
                           {field.value ? format(field.value, "dd/MM/yyyy") : ""}
                           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
