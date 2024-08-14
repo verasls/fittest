@@ -41,15 +41,12 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
-import { z } from "zod";
 
 type SelectClientFormProps = {
   clients: Array<Client>;
-  formRef: React.MutableRefObject<UseFormReturn<
-    z.infer<typeof evaluationSchema>
-  > | null>;
+  formRef: React.MutableRefObject<UseFormReturn<Evaluation> | null>;
 };
 
 export default function SelectClientForm({
