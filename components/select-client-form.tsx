@@ -35,12 +35,13 @@ import {
   Steps,
   useNewEvaluationForm,
 } from "@/context/NewEvaluationFormContext";
+import useFormStatusTrigger from "@/hooks/useFormStatusTrigger";
 import { Client, Evaluation, evaluationSchema } from "@/lib/schema";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 
@@ -62,6 +63,9 @@ export default function SelectClientForm({
   const selectClientState = state.formData
     .filter((form) => form.step === "client")
     .at(0)!.values;
+  const selectClientStatus = state.formData
+    .filter((form) => form.step === "client")
+    .at(0)!.status;
 
   const form = useForm<Evaluation>({
     resolver: zodResolver(evaluationSchema),
@@ -82,6 +86,12 @@ export default function SelectClientForm({
     dispatch({ type: "updateFormValues", payload: values });
     dispatch({ type: "goToNextStep", payload: step });
   }
+
+  useFormStatusTrigger({
+    form,
+    formStatus: selectClientStatus,
+    fieldsToWatch: "clientId",
+  });
 
   return (
     <Card className="px-10 py-8">
