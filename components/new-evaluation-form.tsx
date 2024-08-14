@@ -19,7 +19,7 @@ import {
 } from "@/context/NewEvaluationFormContext";
 import React, { useRef } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { CircleAlert } from "lucide-react";
+import { CircleAlert, CircleCheck } from "lucide-react";
 
 type NewEvaluationFormProps = {
   clients: Array<Client>;
@@ -58,11 +58,12 @@ export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
     dispatch({ type: "goToNextStep", payload: step });
   }
 
-  function handleStepperState(value: Steps) {
+  function getStepperState(value: Steps) {
     const formData = state.formData.find((form) => form.step === value);
 
     if (state.currentStep === value) return "active";
     if (formData?.status.isValid === false) return "invalid";
+    if (formData?.status.isValid === true) return "valid";
     return "inactive";
   }
 
@@ -75,11 +76,11 @@ export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
       observations: "5",
     }[step];
 
-    return handleStepperState(step) === "invalid" ? (
-      <CircleAlert className="h-6 w-6" />
-    ) : (
-      stepNumber
-    );
+    const stepperState = getStepperState(step);
+
+    if (stepperState === "invalid") return <CircleAlert className="h-6 w-6" />;
+    if (stepperState === "valid") return <CircleCheck className="h-6 w-6" />;
+    return stepNumber;
   }
 
   const steps: Array<{ value: Steps; label: string }> = [
@@ -107,7 +108,7 @@ export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
                   <StepperTrigger
                     value={step.value}
                     className="group relative flex flex-col"
-                    data-state={handleStepperState(step.value)}
+                    data-state={getStepperState(step.value)}
                   >
                     <StepperButton>
                       {getStepperButtonContent(step.value)}
