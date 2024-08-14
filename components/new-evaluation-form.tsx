@@ -34,7 +34,8 @@ export async function getNewEvaluationFormStatus(
   const isValid = await form.trigger();
   const values = form.getValues();
   const isDirty = JSON.stringify(values) !== JSON.stringify(currentFormState);
-  return { isValid, isDirty };
+  const isSubmitted = false;
+  return { isValid, isDirty, isSubmitted };
 }
 
 export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
