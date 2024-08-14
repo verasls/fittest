@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Card } from "@/components/ui/card";
@@ -34,6 +34,7 @@ import { z } from "zod";
 import { createClient } from "@/lib/actions";
 import { Client, clientSchema } from "@/lib/schema";
 import { useToast } from "@/components/ui/use-toast";
+import useLeavePageWarning from "@/hooks/useLeavePageWarning";
 
 type NewClientFormProps = {
   userId: string;
@@ -56,23 +57,7 @@ export default function NewClientForm({ userId }: NewClientFormProps) {
   });
 
   const { isDirty } = form.formState;
-
-  useEffect(() => {
-    if (!isDirty) return;
-
-    function handleBeforeUnload(event: BeforeUnloadEvent) {
-      event.preventDefault();
-    }
-
-    window.addEventListener("beforeunload", handleBeforeUnload, {
-      capture: true,
-    });
-
-    return () =>
-      window.removeEventListener("beforeunload", handleBeforeUnload, {
-        capture: true,
-      });
-  }, [isDirty]);
+  useLeavePageWarning(isDirty);
 
   function handlePhoneChange(event: React.ChangeEvent<HTMLInputElement>) {
     let value = event.target.value.replace(/\D/g, "");
