@@ -20,6 +20,7 @@ import {
 import React, { useRef } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { CircleAlert, CircleCheck } from "lucide-react";
+import useLeavePageWarning from "@/hooks/useLeavePageWarning";
 
 type NewEvaluationFormProps = {
   clients: Array<Client>;
@@ -41,6 +42,9 @@ export async function getNewEvaluationFormStatus(
 export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
   const { state, dispatch } = useNewEvaluationForm();
   const formRef = useRef<Form | null>(null);
+
+  const isAnyFormStepDirty = state.formData.some((form) => form.status.isDirty);
+  useLeavePageWarning(isAnyFormStepDirty);
 
   async function handleStepChange(step: Steps) {
     const form = formRef.current;
