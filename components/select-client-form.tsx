@@ -1,5 +1,6 @@
 "use client";
 
+import { getNewEvaluationFormStatus } from "@/components/new-evaluation-form";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -34,7 +35,7 @@ import {
   Steps,
   useNewEvaluationForm,
 } from "@/context/NewEvaluationFormContext";
-import { Client, evaluationSchema } from "@/lib/schema";
+import { Client, Evaluation, evaluationSchema } from "@/lib/schema";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
@@ -62,7 +63,7 @@ export default function SelectClientForm({
     .filter((form) => form.step === "client")
     .at(0)!.values;
 
-  const form = useForm<z.infer<typeof evaluationSchema>>({
+  const form = useForm<Evaluation>({
     resolver: zodResolver(evaluationSchema),
     defaultValues: selectClientState,
   });
@@ -74,11 +75,8 @@ export default function SelectClientForm({
     if (buttonText === "Próximo") step = "anamnesis";
     else throw new Error();
 
-    const isValid = await form.trigger();
+    const status = await getNewEvaluationFormStatus(form, selectClientState);
     const values = form.getValues();
-    const isDirty =
-      JSON.stringify(values) !== JSON.stringify(selectClientState);
-    const status = { isValid, isDirty };
 
     dispatch({ type: "updateFormStatus", payload: status });
     dispatch({ type: "updateFormValues", payload: values });

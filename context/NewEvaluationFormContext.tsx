@@ -11,7 +11,7 @@ const steps = [
 ] as const;
 export type Steps = (typeof steps)[number];
 
-type FormStatus = {
+export type FormStatus = {
   isValid: boolean;
   isDirty: boolean;
 };

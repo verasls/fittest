@@ -11,33 +11,51 @@ import {
 } from "@/components/ui/stepper";
 import { Separator } from "@/components/ui/separator";
 import SelectClientForm from "@/components/select-client-form";
-import { Client, evaluationSchema } from "@/lib/schema";
+import { Client, Evaluation } from "@/lib/schema";
 import {
+  FormStatus,
   Steps,
   useNewEvaluationForm,
 } from "@/context/NewEvaluationFormContext";
 import React, { useRef } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { z } from "zod";
 import { CircleAlert } from "lucide-react";
 
 type NewEvaluationFormProps = {
   clients: Array<Client>;
 };
 
+type Form = UseFormReturn<Evaluation>;
+
+export async function getNewEvaluationFormStatus(
+  form: Form,
+  currentFormState: Evaluation | undefined
+): Promise<FormStatus> {
+  const isValid = await form.trigger();
+  const values = form.getValues();
+  const isDirty = JSON.stringify(values) !== JSON.stringify(currentFormState);
+  return { isValid, isDirty };
+}
+
 export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
   const { state, dispatch } = useNewEvaluationForm();
-  const formRef = useRef<UseFormReturn<
-    z.infer<typeof evaluationSchema>
-  > | null>(null);
+  const formRef = useRef<Form | null>(null);
 
-  function handleStepChange(value: Steps) {
-    if (formRef.current) {
-      const formData = formRef.current.getValues();
-      dispatch({ type: "updateFormValues", payload: formData });
+  async function handleStepChange(step: Steps) {
+    const form = formRef.current;
+    if (form) {
+      const currentFormState = state.formData
+        .filter((form) => form.step === state.currentStep)
+        .at(0)?.values;
+
+      const status = await getNewEvaluationFormStatus(form, currentFormState);
+      const values = form.getValues();
+
+      dispatch({ type: "updateFormStatus", payload: status });
+      dispatch({ type: "updateFormValues", payload: values });
     }
 
-    dispatch({ type: "goToNextStep", payload: value });
+    dispatch({ type: "goToNextStep", payload: step });
   }
 
   function handleStepperState(value: Steps) {
