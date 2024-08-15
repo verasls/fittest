@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/stepper";
 import { Separator } from "@/components/ui/separator";
 import SelectClientForm from "@/components/select-client-form";
-import { Client, Evaluation } from "@/lib/schema";
+import { Anamnesis, Client, SelectClient } from "@/lib/schema";
 import {
   FormStatus,
   Steps,
@@ -27,11 +27,11 @@ type NewEvaluationFormProps = {
   clients: Array<Client>;
 };
 
-type Form = UseFormReturn<Evaluation>;
+type Form = UseFormReturn<SelectClient>;
 
 export async function getNewEvaluationFormStatus(
   form: Form,
-  currentFormState: Evaluation | undefined
+  currentFormState: SelectClient | Anamnesis | undefined
 ): Promise<FormStatus> {
   const isValid = await form.trigger();
   const values = form.getValues();

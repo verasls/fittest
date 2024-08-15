@@ -1,6 +1,6 @@
-import { Evaluation } from "@/lib/schema";
+import { Anamnesis, SelectClient } from "@/lib/schema";
 import { parseAsStringLiteral, useQueryState } from "nuqs";
-import { createContext, useContext, useReducer, useEffect } from "react";
+import React, { createContext, useContext, useReducer, useEffect } from "react";
 
 const steps = [
   "client",
@@ -17,13 +17,23 @@ export type FormStatus = {
   isSubmitted: boolean;
 };
 
+type SelectClientFormData = {
+  step: "client";
+  status: FormStatus;
+  values: SelectClient;
+};
+
+type AnamnesisFormData = {
+  step: "anamnesis";
+  status: FormStatus;
+  values: Anamnesis;
+};
+
+type FormData = SelectClientFormData | AnamnesisFormData;
+
 type State = {
   currentStep: Steps;
-  formData: {
-    step: Steps;
-    status: FormStatus;
-    values: Evaluation;
-  }[];
+  formData: FormData[];
 };
 
 const initialState: State = {
@@ -34,35 +44,52 @@ const initialState: State = {
       status: { isValid: false, isDirty: false, isSubmitted: false },
       values: { clientId: "", date: new Date() },
     },
+    {
+      step: "anamnesis",
+      status: { isValid: false, isDirty: false, isSubmitted: false },
+      values: {
+        practicePhysicalExercise: "Não",
+        which: "",
+        frequence: "",
+        duration: "",
+        physicalActivityHistory: "",
+        objectives: "",
+      },
+    },
   ],
 };
 
 type Action =
   | { type: "goToNextStep"; payload: Steps }
-  | { type: "updateFormValues"; payload: Evaluation }
+  | { type: "updateFormValues"; payload: SelectClient | Anamnesis }
   | { type: "updateFormStatus"; payload: FormStatus };
 
-function reducer(state: State, action: Action) {
+function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "goToNextStep":
       return { ...state, currentStep: action.payload };
 
     case "updateFormValues":
-      const updatedValues = state.formData.map((data) =>
-        data.step === state.currentStep
-          ? { ...data, values: action.payload }
-          : data
-      );
+      const updatedValues = state.formData.map((data) => {
+        if (data.step === state.currentStep) {
+          return {
+            ...data,
+            values: action.payload as (typeof data)["values"],
+          };
+        }
+        return data;
+      });
 
       return {
         ...state,
-        formData: updatedValues,
+        formData: updatedValues as FormData[],
       };
 
     case "updateFormStatus":
-      const status = { ...action.payload, isSubmitted: true };
       const updatedStatus = state.formData.map((data) =>
-        data.step === state.currentStep ? { ...data, status: status } : data
+        data.step === state.currentStep
+          ? { ...data, status: { ...action.payload, isSubmitted: true } }
+          : data
       );
 
       return { ...state, formData: updatedStatus };
@@ -91,7 +118,7 @@ export function NewEvaluationFormProvider({
     parseAsStringLiteral(steps).withDefault("client")
   );
 
-  const [state, dispatch] = useReducer(reducer, {
+  const [state, dispatch] = useReducer<React.Reducer<State, Action>>(reducer, {
     ...initialState,
     currentStep,
   });

@@ -36,7 +36,7 @@ import {
   useNewEvaluationForm,
 } from "@/context/NewEvaluationFormContext";
 import useFormStatusTrigger from "@/hooks/useFormStatusTrigger";
-import { Client, Evaluation, evaluationSchema } from "@/lib/schema";
+import { Client, SelectClient, selectClientSchema } from "@/lib/schema";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
@@ -46,7 +46,7 @@ import { useForm, UseFormReturn } from "react-hook-form";
 
 type SelectClientFormProps = {
   clients: Array<Client>;
-  formRef: React.MutableRefObject<UseFormReturn<Evaluation> | null>;
+  formRef: React.MutableRefObject<UseFormReturn<SelectClient> | null>;
 };
 
 export default function SelectClientForm({
@@ -64,8 +64,8 @@ export default function SelectClientForm({
     .filter((form) => form.step === "client")
     .at(0)!.status;
 
-  const form = useForm<Evaluation>({
-    resolver: zodResolver(evaluationSchema),
+  const form = useForm<SelectClient>({
+    resolver: zodResolver(selectClientSchema),
     defaultValues: selectClientState,
   });
   formRef.current = form;
