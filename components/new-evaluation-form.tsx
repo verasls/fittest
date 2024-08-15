@@ -21,6 +21,7 @@ import React, { useRef } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { CircleAlert, CircleCheck } from "lucide-react";
 import useLeavePageWarning from "@/hooks/useLeavePageWarning";
+import AnamnesisForm from "@/components/anamnesis-form";
 
 type NewEvaluationFormProps = {
   clients: Array<Client>;
@@ -127,7 +128,9 @@ export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
           <StepperContent value="client">
             <SelectClientForm clients={clients} formRef={formRef} />
           </StepperContent>
-          <StepperContent value="anamnesis">Anamnese</StepperContent>
+          <StepperContent value="anamnesis">
+            <AnamnesisForm clients={clients} formRef={formRef} />
+          </StepperContent>
           <StepperContent value="perimeters">Perímetros</StepperContent>
           <StepperContent value="skinfolds">Dobras cutâneas</StepperContent>
           <StepperContent value="observations">Observações</StepperContent>

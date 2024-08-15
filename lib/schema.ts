@@ -33,3 +33,14 @@ export const evaluationSchema = z.object({
 });
 
 export type Evaluation = z.infer<typeof evaluationSchema>;
+
+export const anamnesisSchema = z.object({
+  practicePhysicalExercise: z.enum(["Sim", "Não"]),
+  which: z.string(),
+  frequence: z.string(),
+  duration: z.string(),
+  physicalActivityHistory: z.string(),
+  objectives: z.string(),
+});
+
+export type Anamnesis = z.infer<typeof anamnesisSchema>;
