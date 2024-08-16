@@ -37,26 +37,6 @@ export default function AnamnesisForm({
   formRef,
 }: AnamnesisFormProps) {
   const { state, dispatch } = useNewEvaluationForm();
-  const [
-    showPracticeExerciseDetailsFields,
-    setShowPracticeExerciseDetailsFields,
-  ] = useState(false);
-  const [showSmokeQuantityField, setShowSmokeQuantityField] = useState(false);
-  const [showSmokeTimeSinceStopField, setShowSmokeTimeSinceStopField] =
-    useState(false);
-  const [showAlcoholQuantityField, setShowAlcoholQuantityField] =
-    useState(false);
-  const [showDiseasesDetails, setShowDiseasesDetails] = useState(false);
-  const [
-    showDiseasesFamilyHistoryDetails,
-    setShowDiseasesFamilyHistoryDetails,
-  ] = useState(false);
-  const [showInjuriesDetails, setShowInjuriesDetails] = useState(false);
-  const [showSurgeriesDetails, setShowSurgeriesDetails] = useState(false);
-  const [showMedicationDetails, setShowMedicationDetails] = useState(false);
-  const [showPainsDetails, setShowPainsDetails] = useState(false);
-  const [showPhysicalLimitationsDetails, setShowPhysicalLimitationsDetails] =
-    useState(false);
 
   const anamnesisState = state.formData
     .filter((form) => form.step === "anamnesis")
@@ -68,42 +48,23 @@ export default function AnamnesisForm({
   });
   formRef.current = form;
 
-  const practiceExerciseValue = form.watch("practiceExercise");
-  const smokeValue = form.watch("smoke");
-  const alcoholComsumptionValue = form.watch("alcoholComsumption");
-  const diseasesValue = form.watch("diseases");
-  const diseasesFamilyHistoryValue = form.watch("diseasesFamilyHistory");
-  const injuriesValue = form.watch("injuries");
-  const surgeriesValue = form.watch("surgeries");
-  const medicationValue = form.watch("medication");
-  const painsValue = form.watch("pains");
-  const physicalLimitationsValue = form.watch("physicalLimitations");
-  useEffect(() => {
-    setShowPracticeExerciseDetailsFields(practiceExerciseValue === "Sim");
-    setShowSmokeQuantityField(
-      smokeValue === "Sim" || smokeValue === "Não, mas já fumei"
-    );
-    setShowSmokeTimeSinceStopField(smokeValue === "Não, mas já fumei");
-    setShowAlcoholQuantityField(alcoholComsumptionValue === "Sim");
-    setShowDiseasesDetails(diseasesValue === "Sim");
-    setShowDiseasesFamilyHistoryDetails(diseasesFamilyHistoryValue === "Sim");
-    setShowInjuriesDetails(injuriesValue === "Sim");
-    setShowSurgeriesDetails(surgeriesValue === "Sim");
-    setShowMedicationDetails(medicationValue === "Sim");
-    setShowPainsDetails(painsValue === "Sim");
-    setShowPhysicalLimitationsDetails(physicalLimitationsValue === "Sim");
-  }, [
-    practiceExerciseValue,
-    smokeValue,
-    alcoholComsumptionValue,
-    diseasesValue,
-    diseasesFamilyHistoryValue,
-    injuriesValue,
-    surgeriesValue,
-    medicationValue,
-    painsValue,
-    physicalLimitationsValue,
-  ]);
+  const showPracticeExerciseDetailsFields =
+    form.watch("practiceExercise") === "Sim";
+  const showSmokeQuantityField =
+    form.watch("smoke") === "Sim" ||
+    form.watch("smoke") === "Não, mas já fumei";
+  const showSmokeTimeSinceStopField =
+    form.watch("smoke") === "Não, mas já fumei";
+  const showAlcoholQuantityField = form.watch("alcoholComsumption") === "Sim";
+  const showDiseasesDetails = form.watch("diseases") === "Sim";
+  const showDiseasesFamilyHistoryDetails =
+    form.watch("diseasesFamilyHistory") === "Sim";
+  const showInjuriesDetails = form.watch("injuries") === "Sim";
+  const showSurgeriesDetails = form.watch("surgeries") === "Sim";
+  const showMedicationDetails = form.watch("medication") === "Sim";
+  const showPainsDetails = form.watch("pains") === "Sim";
+  const showPhysicalLimitationsDetails =
+    form.watch("physicalLimitations") === "Sim";
 
   async function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     const buttonText = event.currentTarget.textContent;
