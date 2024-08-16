@@ -48,6 +48,20 @@ export const anamnesisSchema = z.object({
   alcoholQuantity: z.string(),
   sleepQuality: z.string(),
   stressLevel: z.string(),
+  diseases: z.enum(["Sim", "Não"]),
+  diseasesDetails: z.string(),
+  diseasesFamilyHistory: z.enum(["Sim", "Não"]),
+  diseasesFamilyHistoryDetails: z.string(),
+  injuries: z.enum(["Sim", "Não"]),
+  injuriesDetails: z.string(),
+  surgeries: z.enum(["Sim", "Não"]),
+  surgeriesDetails: z.string(),
+  medication: z.enum(["Sim", "Não"]),
+  medicationDetails: z.string(),
+  pains: z.enum(["Sim", "Não"]),
+  painsDetails: z.string(),
+  physicalLimitations: z.enum(["Sim", "Não"]),
+  physicalLimitationsDetails: z.string(),
 });
 
 export type Anamnesis = z.infer<typeof anamnesisSchema>;

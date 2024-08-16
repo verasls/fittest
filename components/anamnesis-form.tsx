@@ -44,6 +44,19 @@ export default function AnamnesisForm({
   const [showSmokeQuantityField, setShowSmokeQuantityField] = useState(false);
   const [showSmokeTimeSinceStopField, setShowSmokeTimeSinceStopField] =
     useState(false);
+  const [showAlcoholQuantityField, setShowAlcoholQuantityField] =
+    useState(false);
+  const [showDiseasesDetails, setShowDiseasesDetails] = useState(false);
+  const [
+    showDiseasesFamilyHistoryDetails,
+    setShowDiseasesFamilyHistoryDetails,
+  ] = useState(false);
+  const [showInjuriesDetails, setShowInjuriesDetails] = useState(false);
+  const [showSurgeriesDetails, setShowSurgeriesDetails] = useState(false);
+  const [showMedicationDetails, setShowMedicationDetails] = useState(false);
+  const [showPainsDetails, setShowPainsDetails] = useState(false);
+  const [showPhysicalLimitationsDetails, setShowPhysicalLimitationsDetails] =
+    useState(false);
 
   const anamnesisState = state.formData
     .filter((form) => form.step === "anamnesis")
@@ -57,15 +70,40 @@ export default function AnamnesisForm({
 
   const practiceExerciseValue = form.watch("practiceExercise");
   const smokeValue = form.watch("smoke");
+  const alcoholComsumptionValue = form.watch("alcoholComsumption");
+  const diseasesValue = form.watch("diseases");
+  const diseasesFamilyHistoryValue = form.watch("diseasesFamilyHistory");
+  const injuriesValue = form.watch("injuries");
+  const surgeriesValue = form.watch("surgeries");
+  const medicationValue = form.watch("medication");
+  const painsValue = form.watch("pains");
+  const physicalLimitationsValue = form.watch("physicalLimitations");
   useEffect(() => {
     setShowPracticeExerciseDetailsFields(practiceExerciseValue === "Sim");
-
     setShowSmokeQuantityField(
       smokeValue === "Sim" || smokeValue === "Não, mas já fumei"
     );
-
     setShowSmokeTimeSinceStopField(smokeValue === "Não, mas já fumei");
-  }, [practiceExerciseValue, smokeValue]);
+    setShowAlcoholQuantityField(alcoholComsumptionValue === "Sim");
+    setShowDiseasesDetails(diseasesValue === "Sim");
+    setShowDiseasesFamilyHistoryDetails(diseasesFamilyHistoryValue === "Sim");
+    setShowInjuriesDetails(injuriesValue === "Sim");
+    setShowSurgeriesDetails(surgeriesValue === "Sim");
+    setShowMedicationDetails(medicationValue === "Sim");
+    setShowPainsDetails(painsValue === "Sim");
+    setShowPhysicalLimitationsDetails(physicalLimitationsValue === "Sim");
+  }, [
+    practiceExerciseValue,
+    smokeValue,
+    alcoholComsumptionValue,
+    diseasesValue,
+    diseasesFamilyHistoryValue,
+    injuriesValue,
+    surgeriesValue,
+    medicationValue,
+    painsValue,
+    physicalLimitationsValue,
+  ]);
 
   async function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     const buttonText = event.currentTarget.textContent;
@@ -286,7 +324,410 @@ export default function AnamnesisForm({
               />
             ) : null}
 
-            <div className="col-start-6 flex justify-end gap-3 pt-4">
+            <FormField
+              control={form.control}
+              name="alcoholComsumption"
+              render={({ field }) => (
+                <FormItem className="col-span-6 mb-2 flex w-full items-center gap-3 space-y-0">
+                  <FormLabel>Consome álcool?</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex items-center gap-3"
+                    >
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="Sim" />
+                        </FormControl>
+                        <FormLabel>Sim</FormLabel>
+                      </FormItem>
+
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="Não" />
+                        </FormControl>
+                        <FormLabel>Não</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {showAlcoholQuantityField ? (
+              <>
+                <FormField
+                  control={form.control}
+                  name="alcoholQuantity"
+                  render={({ field }) => (
+                    <FormItem className="col-span-3 flex w-full flex-col">
+                      <FormLabel>Em que quantidade?</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <div className="col-span-3"></div>
+              </>
+            ) : null}
+
+            <FormField
+              control={form.control}
+              name="sleepQuality"
+              render={({ field }) => (
+                <FormItem className="col-span-3 flex w-full flex-col">
+                  <FormLabel>Qual a qualidade de seu sono?</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="stressLevel"
+              render={({ field }) => (
+                <FormItem className="col-span-3 flex w-full flex-col">
+                  <FormLabel>Qual seu nível de estresse?</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <h3 className="col-span-6 mb-2 mt-6 text-xl font-semibold leading-none tracking-tight">
+              Histórico de saúde
+            </h3>
+
+            <FormField
+              control={form.control}
+              name="diseases"
+              render={({ field }) => (
+                <FormItem className="col-span-6 mb-2 flex w-full items-center gap-3 space-y-0">
+                  <FormLabel>Possui alguma doença?</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex items-center gap-3"
+                    >
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="Sim" />
+                        </FormControl>
+                        <FormLabel>Sim</FormLabel>
+                      </FormItem>
+
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="Não" />
+                        </FormControl>
+                        <FormLabel>Não</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {showDiseasesDetails ? (
+              <FormField
+                control={form.control}
+                name="diseasesDetails"
+                render={({ field }) => (
+                  <FormItem className="col-span-6 flex w-full flex-col">
+                    <FormLabel>Qual?</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            ) : null}
+
+            <FormField
+              control={form.control}
+              name="diseasesFamilyHistory"
+              render={({ field }) => (
+                <FormItem className="col-span-6 mb-2 flex w-full items-center gap-3 space-y-0">
+                  <FormLabel>
+                    Possui histórico familiar de alguma doença?
+                  </FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex items-center gap-3"
+                    >
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="Sim" />
+                        </FormControl>
+                        <FormLabel>Sim</FormLabel>
+                      </FormItem>
+
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="Não" />
+                        </FormControl>
+                        <FormLabel>Não</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {showDiseasesFamilyHistoryDetails ? (
+              <FormField
+                control={form.control}
+                name="diseasesFamilyHistoryDetails"
+                render={({ field }) => (
+                  <FormItem className="col-span-6 flex w-full flex-col">
+                    <FormLabel>Qual?</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            ) : null}
+
+            <FormField
+              control={form.control}
+              name="injuries"
+              render={({ field }) => (
+                <FormItem className="col-span-6 mb-2 flex w-full items-center gap-3 space-y-0">
+                  <FormLabel>Possui alguma lesão?</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex items-center gap-3"
+                    >
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="Sim" />
+                        </FormControl>
+                        <FormLabel>Sim</FormLabel>
+                      </FormItem>
+
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="Não" />
+                        </FormControl>
+                        <FormLabel>Não</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {showInjuriesDetails ? (
+              <FormField
+                control={form.control}
+                name="injuriesDetails"
+                render={({ field }) => (
+                  <FormItem className="col-span-6 flex w-full flex-col">
+                    <FormLabel>Qual?</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            ) : null}
+
+            <FormField
+              control={form.control}
+              name="surgeries"
+              render={({ field }) => (
+                <FormItem className="col-span-6 mb-2 flex w-full items-center gap-3 space-y-0">
+                  <FormLabel>Já fez alguma cirurgia?</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex items-center gap-3"
+                    >
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="Sim" />
+                        </FormControl>
+                        <FormLabel>Sim</FormLabel>
+                      </FormItem>
+
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="Não" />
+                        </FormControl>
+                        <FormLabel>Não</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {showSurgeriesDetails ? (
+              <FormField
+                control={form.control}
+                name="surgeriesDetails"
+                render={({ field }) => (
+                  <FormItem className="col-span-6 flex w-full flex-col">
+                    <FormLabel>Qual?</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            ) : null}
+
+            <FormField
+              control={form.control}
+              name="medication"
+              render={({ field }) => (
+                <FormItem className="col-span-6 mb-2 flex w-full items-center gap-3 space-y-0">
+                  <FormLabel>Faz uso de alguma medicação habitual?</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex items-center gap-3"
+                    >
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="Sim" />
+                        </FormControl>
+                        <FormLabel>Sim</FormLabel>
+                      </FormItem>
+
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="Não" />
+                        </FormControl>
+                        <FormLabel>Não</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {showMedicationDetails ? (
+              <FormField
+                control={form.control}
+                name="medicationDetails"
+                render={({ field }) => (
+                  <FormItem className="col-span-6 flex w-full flex-col">
+                    <FormLabel>Qual?</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            ) : null}
+
+            <FormField
+              control={form.control}
+              name="pains"
+              render={({ field }) => (
+                <FormItem className="col-span-6 mb-2 flex w-full items-center gap-3 space-y-0">
+                  <FormLabel>Sente alguma dor?</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex items-center gap-3"
+                    >
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="Sim" />
+                        </FormControl>
+                        <FormLabel>Sim</FormLabel>
+                      </FormItem>
+
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="Não" />
+                        </FormControl>
+                        <FormLabel>Não</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {showPainsDetails ? (
+              <FormField
+                control={form.control}
+                name="painsDetails"
+                render={({ field }) => (
+                  <FormItem className="col-span-6 flex w-full flex-col">
+                    <FormLabel>Qual?</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            ) : null}
+
+            <FormField
+              control={form.control}
+              name="physicalLimitations"
+              render={({ field }) => (
+                <FormItem className="col-span-6 mb-2 flex w-full items-center gap-3 space-y-0">
+                  <FormLabel>Possui alguma limitação física?</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex items-center gap-3"
+                    >
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="Sim" />
+                        </FormControl>
+                        <FormLabel>Sim</FormLabel>
+                      </FormItem>
+
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="Não" />
+                        </FormControl>
+                        <FormLabel>Não</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {showPhysicalLimitationsDetails ? (
+              <FormField
+                control={form.control}
+                name="physicalLimitationsDetails"
+                render={({ field }) => (
+                  <FormItem className="col-span-6 flex w-full flex-col">
+                    <FormLabel>Qual?</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            ) : null}
+
+            <div className="col-span-6 flex justify-end gap-3 pt-4">
               <Button variant="outline" type="button" onClick={handleClick}>
                 Anterior
               </Button>
