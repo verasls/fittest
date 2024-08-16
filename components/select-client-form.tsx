@@ -105,7 +105,7 @@ export default function SelectClientForm({
       </CardHeader>
       <CardContent className="pt-6">
         <Form {...form}>
-          <form className="grid grid-cols-2 gap-3">
+          <form className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
               name="clientId"
