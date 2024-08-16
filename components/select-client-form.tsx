@@ -72,9 +72,13 @@ export default function SelectClientForm({
 
   async function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     const buttonText = event.currentTarget.textContent;
+
     let step: Steps;
-    if (buttonText === "Próximo") step = "anamnesis";
-    else throw new Error();
+    if (buttonText === "Próximo") {
+      step = "anamnesis";
+    } else {
+      throw new Error("Unkown action");
+    }
 
     const status = await getNewEvaluationFormStatus(form, selectClientState);
     const values = form.getValues();
