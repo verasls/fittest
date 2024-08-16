@@ -35,12 +35,19 @@ export const selectClientSchema = z.object({
 export type SelectClient = z.infer<typeof selectClientSchema>;
 
 export const anamnesisSchema = z.object({
-  practicePhysicalExercise: z.enum(["Sim", "Não"]),
-  which: z.string(),
-  frequence: z.string(),
-  duration: z.string(),
+  practiceExercise: z.enum(["Sim", "Não"]),
+  exerciseType: z.string(),
+  exerciseFrequence: z.string(),
+  exerciseDuration: z.string(),
   physicalActivityHistory: z.string(),
   objectives: z.string(),
+  smoke: z.enum(["Sim", "Não, mas já fumei", "Nunca fumei"]),
+  smokeQuantity: z.string(),
+  smokeTimeSinceStop: z.string(),
+  alcoholComsumption: z.enum(["Sim", "Não"]),
+  alcoholQuantity: z.string(),
+  sleepQuality: z.string(),
+  stressLevel: z.string(),
 });
 
 export type Anamnesis = z.infer<typeof anamnesisSchema>;
