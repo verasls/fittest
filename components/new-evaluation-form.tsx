@@ -27,7 +27,7 @@ type NewEvaluationFormProps = {
   clients: Array<Client>;
 };
 
-type Form = UseFormReturn<SelectClient>;
+type Form = UseFormReturn<SelectClient> | UseFormReturn<Anamnesis>;
 
 export async function getNewEvaluationFormStatus(
   form: Form,
