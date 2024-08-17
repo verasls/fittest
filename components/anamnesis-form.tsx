@@ -127,7 +127,14 @@ export default function AnamnesisForm({
                   <FormLabel>Pratica exercício físico regularmente?</FormLabel>
                   <FormControl>
                     <RadioGroup
-                      onValueChange={field.onChange}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        if (value === "Não") {
+                          form.setValue("exerciseType", "");
+                          form.setValue("exerciseFrequence", "");
+                          form.setValue("exerciseDuration", "");
+                        }
+                      }}
                       defaultValue={field.value}
                       className="flex items-center gap-3"
                     >
@@ -233,7 +240,16 @@ export default function AnamnesisForm({
                   <FormLabel>Fuma?</FormLabel>
                   <FormControl>
                     <RadioGroup
-                      onValueChange={field.onChange}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        if (value === "Sim") {
+                          form.setValue("smokeQuantity", "");
+                        }
+                        if (value === "Não, mas já fumei") {
+                          form.setValue("smokeQuantity", "");
+                          form.setValue("smokeTimeSinceStop", "");
+                        }
+                      }}
                       defaultValue={field.value}
                       className="flex items-center gap-3"
                     >
@@ -301,7 +317,12 @@ export default function AnamnesisForm({
                   <FormLabel>Consome álcool?</FormLabel>
                   <FormControl>
                     <RadioGroup
-                      onValueChange={field.onChange}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        if (value === "Não") {
+                          form.setValue("alcoholQuantity", "");
+                        }
+                      }}
                       defaultValue={field.value}
                       className="flex items-center gap-3"
                     >
@@ -380,7 +401,12 @@ export default function AnamnesisForm({
                   <FormLabel>Possui alguma doença?</FormLabel>
                   <FormControl>
                     <RadioGroup
-                      onValueChange={field.onChange}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        if (value === "Não") {
+                          form.setValue("diseasesDetails", "");
+                        }
+                      }}
                       defaultValue={field.value}
                       className="flex items-center gap-3"
                     >
@@ -428,7 +454,12 @@ export default function AnamnesisForm({
                   </FormLabel>
                   <FormControl>
                     <RadioGroup
-                      onValueChange={field.onChange}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        if (value === "Não") {
+                          form.setValue("diseasesFamilyHistoryDetails", "");
+                        }
+                      }}
                       defaultValue={field.value}
                       className="flex items-center gap-3"
                     >
@@ -474,7 +505,12 @@ export default function AnamnesisForm({
                   <FormLabel>Possui alguma lesão?</FormLabel>
                   <FormControl>
                     <RadioGroup
-                      onValueChange={field.onChange}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        if (value === "Não") {
+                          form.setValue("injuriesDetails", "");
+                        }
+                      }}
                       defaultValue={field.value}
                       className="flex items-center gap-3"
                     >
@@ -520,7 +556,12 @@ export default function AnamnesisForm({
                   <FormLabel>Já fez alguma cirurgia?</FormLabel>
                   <FormControl>
                     <RadioGroup
-                      onValueChange={field.onChange}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        if (value === "Não") {
+                          form.setValue("surgeriesDetails", "");
+                        }
+                      }}
                       defaultValue={field.value}
                       className="flex items-center gap-3"
                     >
@@ -566,7 +607,12 @@ export default function AnamnesisForm({
                   <FormLabel>Faz uso de alguma medicação habitual?</FormLabel>
                   <FormControl>
                     <RadioGroup
-                      onValueChange={field.onChange}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        if (value === "Não") {
+                          form.setValue("medicationDetails", "");
+                        }
+                      }}
                       defaultValue={field.value}
                       className="flex items-center gap-3"
                     >
@@ -612,7 +658,12 @@ export default function AnamnesisForm({
                   <FormLabel>Sente alguma dor?</FormLabel>
                   <FormControl>
                     <RadioGroup
-                      onValueChange={field.onChange}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        if (value === "Não") {
+                          form.setValue("painsDetails", "");
+                        }
+                      }}
                       defaultValue={field.value}
                       className="flex items-center gap-3"
                     >
@@ -658,7 +709,12 @@ export default function AnamnesisForm({
                   <FormLabel>Possui alguma limitação física?</FormLabel>
                   <FormControl>
                     <RadioGroup
-                      onValueChange={field.onChange}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        if (value === "Não") {
+                          form.setValue("physicalLimitationsDetails", "");
+                        }
+                      }}
                       defaultValue={field.value}
                       className="flex items-center gap-3"
                     >
