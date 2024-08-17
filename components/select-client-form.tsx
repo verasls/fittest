@@ -1,6 +1,9 @@
 "use client";
 
-import { getNewEvaluationFormStatus } from "@/components/new-evaluation-form";
+import {
+  getNewEvaluationFormStatus,
+  NewEvaluationForm,
+} from "@/components/new-evaluation-form";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -42,11 +45,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import React, { useState } from "react";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 type SelectClientFormProps = {
   clients: Array<Client>;
-  formRef: React.MutableRefObject<UseFormReturn<SelectClient> | null>;
+  formRef: React.MutableRefObject<NewEvaluationForm | null>;
 };
 
 export default function SelectClientForm({

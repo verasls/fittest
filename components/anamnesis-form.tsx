@@ -1,6 +1,9 @@
 "use client";
 
-import { getNewEvaluationFormStatus } from "@/components/new-evaluation-form";
+import {
+  getNewEvaluationFormStatus,
+  NewEvaluationForm,
+} from "@/components/new-evaluation-form";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,11 +28,11 @@ import {
 import { Anamnesis, anamnesisSchema, Client } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { differenceInYears } from "date-fns";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 type AnamnesisFormProps = {
   clients: Array<Client>;
-  formRef: React.MutableRefObject<UseFormReturn<Anamnesis> | null>;
+  formRef: React.MutableRefObject<NewEvaluationForm | null>;
 };
 
 export default function AnamnesisForm({

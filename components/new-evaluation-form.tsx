@@ -27,10 +27,12 @@ type NewEvaluationFormProps = {
   clients: Array<Client>;
 };
 
-type Form = UseFormReturn<SelectClient> | UseFormReturn<Anamnesis>;
+export type NewEvaluationForm =
+  | UseFormReturn<SelectClient>
+  | UseFormReturn<Anamnesis>;
 
 export async function getNewEvaluationFormStatus(
-  form: Form,
+  form: NewEvaluationForm,
   currentFormState: SelectClient | Anamnesis | undefined
 ): Promise<FormStatus> {
   const isValid = await form.trigger();
@@ -42,7 +44,7 @@ export async function getNewEvaluationFormStatus(
 
 export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
   const { state, dispatch } = useNewEvaluationForm();
-  const formRef = useRef<Form | null>(null);
+  const formRef = useRef<NewEvaluationForm | null>(null);
 
   const isAnyFormStepDirty = state.formData.some((form) => form.status.isDirty);
   useLeavePageWarning(isAnyFormStepDirty);
