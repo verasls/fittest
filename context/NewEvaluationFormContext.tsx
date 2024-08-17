@@ -15,12 +15,14 @@ export type FormStatus = {
   isValid: boolean;
   isDirty: boolean;
   isSubmitted: boolean;
+  isVisited: boolean;
 };
 
-const initialStatus = {
+const initialStatus: FormStatus = {
   isValid: true,
   isDirty: false,
   isSubmitted: false,
+  isVisited: false,
 };
 
 type SelectClientFormData = {
@@ -47,7 +49,7 @@ const initialState: State = {
   formData: [
     {
       step: "client",
-      status: initialStatus,
+      status: { ...initialStatus, isVisited: true },
       values: { clientId: "", date: new Date() },
     },
     {
@@ -94,7 +96,21 @@ type Action =
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "goToNextStep":
-      return { ...state, currentStep: action.payload };
+      const updatedFormData = state.formData.map((data) => {
+        if (data.step === action.payload) {
+          return {
+            ...data,
+            status: { ...data.status, isVisited: true },
+          };
+        }
+        return data;
+      });
+
+      return {
+        ...state,
+        currentStep: action.payload,
+        formData: updatedFormData as FormData[],
+      };
 
     case "updateFormValues":
       const updatedValues = state.formData.map((data) => {

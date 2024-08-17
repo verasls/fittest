@@ -39,7 +39,8 @@ export async function getNewEvaluationFormStatus(
   const values = form.getValues();
   const isDirty = JSON.stringify(values) !== JSON.stringify(currentFormState);
   const isSubmitted = false;
-  return { isValid, isDirty, isSubmitted };
+  const isVisited = true;
+  return { isValid, isDirty, isSubmitted, isVisited };
 }
 
 export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
@@ -69,9 +70,25 @@ export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
   function getStepperState(value: Steps) {
     const formData = state.formData.find((form) => form.step === value);
 
-    if (state.currentStep === value) return "active";
-    if (formData?.status.isValid === false) return "invalid";
-    if (formData?.status.isValid === true) return "valid";
+    if (state.currentStep === value) {
+      return "active";
+    }
+    if (!formData) {
+      return "inactive";
+    }
+    if (
+      formData.status.isValid === false &&
+      formData.status.isVisited === true
+    ) {
+      return "invalid";
+    }
+    if (
+      formData.status.isValid === true &&
+      formData.status.isVisited === true &&
+      formData.status.isDirty
+    ) {
+      return "valid";
+    }
     return "inactive";
   }
 
