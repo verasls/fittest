@@ -25,7 +25,6 @@ import {
 import { Anamnesis, anamnesisSchema, Client } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { differenceInYears } from "date-fns";
-import { useEffect, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 
 type AnamnesisFormProps = {
