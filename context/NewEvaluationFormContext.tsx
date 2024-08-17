@@ -17,6 +17,12 @@ export type FormStatus = {
   isSubmitted: boolean;
 };
 
+const initialStatus = {
+  isValid: true,
+  isDirty: false,
+  isSubmitted: false,
+};
+
 type SelectClientFormData = {
   step: "client";
   status: FormStatus;
@@ -41,12 +47,12 @@ const initialState: State = {
   formData: [
     {
       step: "client",
-      status: { isValid: false, isDirty: false, isSubmitted: false },
+      status: initialStatus,
       values: { clientId: "", date: new Date() },
     },
     {
       step: "anamnesis",
-      status: { isValid: false, isDirty: false, isSubmitted: false },
+      status: initialStatus,
       values: {
         practiceExercise: "Não",
         exerciseType: "",
