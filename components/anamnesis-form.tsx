@@ -1,5 +1,6 @@
 "use client";
 
+import { getNewEvaluationFormStatus } from "@/components/new-evaluation-form";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -78,6 +79,11 @@ export default function AnamnesisForm({
       throw new Error("Unkown action");
     }
 
+    const status = await getNewEvaluationFormStatus(form, anamnesisState);
+    const values = form.getValues();
+
+    dispatch({ type: "updateFormStatus", payload: status });
+    dispatch({ type: "updateFormValues", payload: values });
     dispatch({ type: "goToNextStep", payload: step });
   }
 
