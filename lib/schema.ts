@@ -65,3 +65,26 @@ export const anamnesisSchema = z.object({
 });
 
 export type Anamnesis = z.infer<typeof anamnesisSchema>;
+
+export const perimetersSchema = z.object({
+  armLeftRelaxed: z.number(),
+  armRightRelaxed: z.number(),
+  armLeftFlexed: z.number(),
+  armRightFlexed: z.number(),
+  forearmLeft: z.number(),
+  forearmRight: z.number(),
+  thighLeftProximal: z.number(),
+  thighRightProximal: z.number(),
+  thighLeftMedial: z.number(),
+  thighRightMedial: z.number(),
+  thighLeftDistal: z.number(),
+  thighRightDistal: z.number(),
+  calfLeft: z.number(),
+  calfRight: z.number(),
+  chest: z.number(),
+  abdomen: z.number(),
+  waist: z.number(),
+  hips: z.number(),
+});
+
+export type Perimeters = z.infer<typeof perimetersSchema>;

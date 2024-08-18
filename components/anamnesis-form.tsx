@@ -26,8 +26,8 @@ import {
   useNewEvaluationForm,
 } from "@/context/NewEvaluationFormContext";
 import { Anamnesis, anamnesisSchema, Client } from "@/lib/schema";
+import { getSelectedClientDetails } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { differenceInYears } from "date-fns";
 import { useForm } from "react-hook-form";
 
 type AnamnesisFormProps = {
@@ -40,6 +40,7 @@ export default function AnamnesisForm({
   formRef,
 }: AnamnesisFormProps) {
   const { state, dispatch } = useNewEvaluationForm();
+  const { clientName, clientAge } = getSelectedClientDetails(state, clients);
 
   const anamnesisState = state.formData
     .filter((form) => form.step === "anamnesis")
@@ -88,19 +89,6 @@ export default function AnamnesisForm({
     dispatch({ type: "updateFormValues", payload: values });
     dispatch({ type: "goToNextStep", payload: step });
   }
-
-  const evaluationData = state.formData
-    .filter((form) => form.step === "client")
-    .at(0);
-  const evaluationDate = evaluationData?.values.date;
-  const clientId = evaluationData?.values.clientId;
-  const client = clients.find((client) => client.id! === clientId);
-  const clientName = client?.name;
-  const clientDob = client?.dateOfBirth;
-  const clientAge =
-    evaluationDate && clientDob
-      ? differenceInYears(evaluationDate, clientDob)
-      : null;
 
   return (
     <Card className="px-10 py-8">

@@ -220,7 +220,7 @@ export default function SelectClientForm({
               )}
             />
 
-            <div className="col-start-2 flex justify-end pt-4">
+            <div className="col-span-2 flex justify-end pt-4">
               <Button type="button" onClick={handleClick}>
                 Próximo
               </Button>

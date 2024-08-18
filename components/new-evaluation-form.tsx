@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/stepper";
 import { Separator } from "@/components/ui/separator";
 import SelectClientForm from "@/components/select-client-form";
-import { Anamnesis, Client, SelectClient } from "@/lib/schema";
+import { Anamnesis, Client, Perimeters, SelectClient } from "@/lib/schema";
 import {
   FormStatus,
   Steps,
@@ -30,11 +30,12 @@ type NewEvaluationFormProps = {
 
 export type NewEvaluationForm =
   | UseFormReturn<SelectClient>
-  | UseFormReturn<Anamnesis>;
+  | UseFormReturn<Anamnesis>
+  | UseFormReturn<Perimeters>;
 
 export async function getNewEvaluationFormStatus(
   form: NewEvaluationForm,
-  currentFormState: SelectClient | Anamnesis | undefined
+  currentFormState: SelectClient | Anamnesis | Perimeters | undefined
 ): Promise<FormStatus> {
   const isValid = await form.trigger();
   const values = form.getValues();
@@ -152,7 +153,7 @@ export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
             <AnamnesisForm clients={clients} formRef={formRef} />
           </StepperContent>
           <StepperContent value="perimeters">
-            <PerimetersForm />
+            <PerimetersForm clients={clients} formRef={formRef} />
           </StepperContent>
           <StepperContent value="skinfolds">Dobras cutâneas</StepperContent>
           <StepperContent value="observations">Observações</StepperContent>
