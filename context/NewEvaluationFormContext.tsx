@@ -205,7 +205,8 @@ export function NewEvaluationFormProvider({
   const value = {
     state,
     dispatch: (action: Action) => {
-      if (action.type === "goToNextStep") setCurrentStep(action.payload);
+      if (action.type === "goToNextStep")
+        setCurrentStep(action.payload, { scroll: true });
       dispatch(action);
     },
   };
