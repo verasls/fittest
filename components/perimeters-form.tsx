@@ -18,6 +18,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
@@ -96,8 +97,17 @@ export default function PerimetersForm({
                 <FormItem>
                   <FormLabel>Braço esquerdo relaxado</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder="(cm)"
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -109,8 +119,17 @@ export default function PerimetersForm({
                 <FormItem>
                   <FormLabel>Braço direito relaxado</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder="(cm)"
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -122,8 +141,17 @@ export default function PerimetersForm({
                 <FormItem>
                   <FormLabel>Braço esquerdo contraído</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder="(cm)"
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -135,8 +163,17 @@ export default function PerimetersForm({
                 <FormItem>
                   <FormLabel>Braço direito contraído</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder="(cm)"
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -148,8 +185,17 @@ export default function PerimetersForm({
                 <FormItem>
                   <FormLabel>Antebraço esquerdo</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder="(cm)"
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -161,8 +207,17 @@ export default function PerimetersForm({
                 <FormItem>
                   <FormLabel>Antebraço direito</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder="(cm)"
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -178,8 +233,17 @@ export default function PerimetersForm({
                 <FormItem>
                   <FormLabel>Coxa esquerda proximal</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder="(cm)"
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -191,8 +255,17 @@ export default function PerimetersForm({
                 <FormItem>
                   <FormLabel>Coxa direita proximal</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder="(cm)"
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -204,8 +277,17 @@ export default function PerimetersForm({
                 <FormItem>
                   <FormLabel>Coxa esquerda medial</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder="(cm)"
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -217,8 +299,17 @@ export default function PerimetersForm({
                 <FormItem>
                   <FormLabel>Coxa direita medial</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder="(cm)"
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -230,8 +321,17 @@ export default function PerimetersForm({
                 <FormItem>
                   <FormLabel>Coxa esquerda distal</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder="(cm)"
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -243,8 +343,17 @@ export default function PerimetersForm({
                 <FormItem>
                   <FormLabel>Coxa direita distal</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder="(cm)"
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -256,8 +365,17 @@ export default function PerimetersForm({
                 <FormItem>
                   <FormLabel>Panturrilha esquerda</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder="(cm)"
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -269,8 +387,17 @@ export default function PerimetersForm({
                 <FormItem>
                   <FormLabel>Panturrilha direita</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder="(cm)"
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -286,8 +413,17 @@ export default function PerimetersForm({
                 <FormItem>
                   <FormLabel>Tórax</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder="(cm)"
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -299,8 +435,17 @@ export default function PerimetersForm({
                 <FormItem>
                   <FormLabel>Abdômen</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder="(cm)"
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -312,8 +457,17 @@ export default function PerimetersForm({
                 <FormItem>
                   <FormLabel>Cintura</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder="(cm)"
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -325,8 +479,17 @@ export default function PerimetersForm({
                 <FormItem>
                   <FormLabel>Quadril</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" />
+                    <Input
+                      {...field}
+                      type="number"
+                      min="0"
+                      placeholder="(cm)"
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
