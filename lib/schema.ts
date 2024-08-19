@@ -88,3 +88,20 @@ export const perimetersSchema = z.object({
 });
 
 export type Perimeters = z.infer<typeof perimetersSchema>;
+
+export const skinfoldsSchema = z.object({
+  protocol: z.enum(
+    ["Pollock 7 dobras", "Pollock 3 dobras", "Petroski", "Guedes", "Faulkner"],
+    { message: "Por favor, escolha uma opção" }
+  ),
+  chest: z.number().optional(),
+  subscapular: z.number().optional(),
+  midaxillary: z.number().optional(),
+  abdominal: z.number().optional(),
+  suprailiac: z.number().optional(),
+  triceps: z.number().optional(),
+  thigh: z.number().optional(),
+  calf: z.number().optional(),
+});
+
+export type Skinfolds = z.infer<typeof skinfoldsSchema>;

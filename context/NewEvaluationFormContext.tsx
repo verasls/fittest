@@ -1,4 +1,4 @@
-import { Anamnesis, Perimeters, SelectClient } from "@/lib/schema";
+import { Anamnesis, Perimeters, SelectClient, Skinfolds } from "@/lib/schema";
 import { parseAsStringLiteral, useQueryState } from "nuqs";
 import React, { createContext, useContext, useReducer, useEffect } from "react";
 
@@ -43,11 +43,21 @@ type PerimetersFormData = {
   values: Perimeters;
 };
 
-type FormData = SelectClientFormData | AnamnesisFormData | PerimetersFormData;
+type SkinfoldsFormData = {
+  step: "skinfolds";
+  status: FormStatus;
+  values: Skinfolds;
+};
+
+type FormData =
+  | SelectClientFormData
+  | AnamnesisFormData
+  | PerimetersFormData
+  | SkinfoldsFormData;
 
 export type State = {
   currentStep: Steps;
-  formData: FormData[];
+  formData: Array<FormData>;
 };
 
 const initialState: State = {
@@ -115,12 +125,30 @@ const initialState: State = {
         hips: undefined,
       },
     },
+    {
+      step: "skinfolds",
+      status: initialStatus,
+      values: {
+        protocol: "Pollock 7 dobras",
+        chest: undefined,
+        subscapular: undefined,
+        midaxillary: undefined,
+        abdominal: undefined,
+        suprailiac: undefined,
+        triceps: undefined,
+        thigh: undefined,
+        calf: undefined,
+      },
+    },
   ],
 };
 
 type Action =
   | { type: "goToNextStep"; payload: Steps }
-  | { type: "updateFormValues"; payload: SelectClient | Anamnesis | Perimeters }
+  | {
+      type: "updateFormValues";
+      payload: SelectClient | Anamnesis | Perimeters | Skinfolds;
+    }
   | { type: "updateFormStatus"; payload: FormStatus };
 
 function reducer(state: State, action: Action): State {

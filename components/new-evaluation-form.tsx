@@ -11,7 +11,13 @@ import {
 } from "@/components/ui/stepper";
 import { Separator } from "@/components/ui/separator";
 import SelectClientForm from "@/components/select-client-form";
-import { Anamnesis, Client, Perimeters, SelectClient } from "@/lib/schema";
+import {
+  Anamnesis,
+  Client,
+  Perimeters,
+  SelectClient,
+  Skinfolds,
+} from "@/lib/schema";
 import {
   FormStatus,
   Steps,
@@ -23,6 +29,7 @@ import { CircleAlert, CircleCheck } from "lucide-react";
 import useLeavePageWarning from "@/hooks/useLeavePageWarning";
 import AnamnesisForm from "@/components/anamnesis-form";
 import PerimetersForm from "@/components/perimeters-form";
+import SkinfoldsForm from "@/components/skinfolds-form";
 
 type NewEvaluationFormProps = {
   clients: Array<Client>;
@@ -31,11 +38,17 @@ type NewEvaluationFormProps = {
 export type NewEvaluationForm =
   | UseFormReturn<SelectClient>
   | UseFormReturn<Anamnesis>
-  | UseFormReturn<Perimeters>;
+  | UseFormReturn<Perimeters>
+  | UseFormReturn<Skinfolds>;
 
 export async function getNewEvaluationFormStatus(
   form: NewEvaluationForm,
-  currentFormState: SelectClient | Anamnesis | Perimeters | undefined
+  currentFormState:
+    | SelectClient
+    | Anamnesis
+    | Perimeters
+    | Skinfolds
+    | undefined
 ): Promise<FormStatus> {
   const isValid = await form.trigger();
   const values = form.getValues();
@@ -155,7 +168,9 @@ export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
           <StepperContent value="perimeters">
             <PerimetersForm clients={clients} formRef={formRef} />
           </StepperContent>
-          <StepperContent value="skinfolds">Dobras cutâneas</StepperContent>
+          <StepperContent value="skinfolds">
+            <SkinfoldsForm clients={clients} formRef={formRef} />
+          </StepperContent>
           <StepperContent value="observations">Observações</StepperContent>
         </Stepper>
       </div>
