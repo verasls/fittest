@@ -49,7 +49,10 @@ export default function SkinfoldsForm({
   formRef,
 }: SkinfoldsFormProps) {
   const { state, dispatch } = useNewEvaluationForm();
-  const { clientName, clientAge } = getSelectedClientDetails(state, clients);
+  const { clientName, clientAge, clientSex } = getSelectedClientDetails(
+    state,
+    clients
+  );
 
   const skinfoldsState = state.formData
     .filter((form) => form.step === "skinfolds")
@@ -63,6 +66,45 @@ export default function SkinfoldsForm({
     defaultValues: skinfoldsState,
   });
   formRef.current = form;
+
+  const showChestField =
+    form.watch("protocol") === "Pollock 7 dobras" ||
+    (form.watch("protocol") === "Pollock 3 dobras" &&
+      clientSex === "Masculino") ||
+    form.watch("protocol") === "Petroski";
+  const showSubscapularField =
+    form.watch("protocol") === "Pollock 7 dobras" ||
+    form.watch("protocol") === "Petroski" ||
+    form.watch("protocol") === "Guedes" ||
+    form.watch("protocol") === "Faulkner";
+  const showMidaxillaryField =
+    form.watch("protocol") === "Pollock 7 dobras" ||
+    form.watch("protocol") === "Petroski";
+  const showAbdominalField =
+    form.watch("protocol") === "Pollock 7 dobras" ||
+    (form.watch("protocol") === "Pollock 3 dobras" &&
+      clientSex === "Masculino") ||
+    form.watch("protocol") === "Petroski" ||
+    form.watch("protocol") === "Faulkner";
+  const showSuprailiacField =
+    form.watch("protocol") === "Pollock 7 dobras" ||
+    (form.watch("protocol") === "Pollock 3 dobras" &&
+      clientSex === "Feminino") ||
+    form.watch("protocol") === "Petroski" ||
+    form.watch("protocol") === "Guedes" ||
+    form.watch("protocol") === "Faulkner";
+  const showTricepsField =
+    form.watch("protocol") === "Pollock 7 dobras" ||
+    (form.watch("protocol") === "Pollock 3 dobras" &&
+      clientSex === "Feminino") ||
+    form.watch("protocol") === "Petroski" ||
+    form.watch("protocol") === "Guedes" ||
+    form.watch("protocol") === "Faulkner";
+  const showThighField =
+    form.watch("protocol") === "Pollock 7 dobras" ||
+    form.watch("protocol") === "Pollock 3 dobras" ||
+    form.watch("protocol") === "Petroski";
+  const showCalfField = form.watch("protocol") === "Guedes";
 
   async function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     const buttonText = event.currentTarget.textContent;
@@ -113,7 +155,10 @@ export default function SkinfoldsForm({
               render={({ field }) => (
                 <FormItem className="flex w-full flex-col">
                   <FormLabel>Protocolo</FormLabel>
-                  <Select onValueChange={field.onChange}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue />
@@ -142,181 +187,197 @@ export default function SkinfoldsForm({
               Dobras
             </h3>
 
-            <FormField
-              control={form.control}
-              name="chest"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Peitoral</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="number"
-                      min="0"
-                      placeholder="(mm)"
-                      onChange={(event) =>
-                        field.onChange(event.target.valueAsNumber)
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {showChestField ? (
+              <FormField
+                control={form.control}
+                name="chest"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Peitoral</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        min="0"
+                        placeholder="(mm)"
+                        onChange={(event) =>
+                          field.onChange(event.target.valueAsNumber)
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : null}
 
-            <FormField
-              control={form.control}
-              name="subscapular"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Subescapular</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="number"
-                      min="0"
-                      placeholder="(mm)"
-                      onChange={(event) =>
-                        field.onChange(event.target.valueAsNumber)
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {showSubscapularField ? (
+              <FormField
+                control={form.control}
+                name="subscapular"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Subescapular</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        min="0"
+                        placeholder="(mm)"
+                        onChange={(event) =>
+                          field.onChange(event.target.valueAsNumber)
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : null}
 
-            <FormField
-              control={form.control}
-              name="midaxillary"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Axilar média</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="number"
-                      min="0"
-                      placeholder="(mm)"
-                      onChange={(event) =>
-                        field.onChange(event.target.valueAsNumber)
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {showMidaxillaryField ? (
+              <FormField
+                control={form.control}
+                name="midaxillary"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Axilar média</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        min="0"
+                        placeholder="(mm)"
+                        onChange={(event) =>
+                          field.onChange(event.target.valueAsNumber)
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : null}
 
-            <FormField
-              control={form.control}
-              name="abdominal"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Abdominal</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="number"
-                      min="0"
-                      placeholder="(mm)"
-                      onChange={(event) =>
-                        field.onChange(event.target.valueAsNumber)
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {showAbdominalField ? (
+              <FormField
+                control={form.control}
+                name="abdominal"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Abdominal</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        min="0"
+                        placeholder="(mm)"
+                        onChange={(event) =>
+                          field.onChange(event.target.valueAsNumber)
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : null}
 
-            <FormField
-              control={form.control}
-              name="suprailiac"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Supra-ilíaca</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="number"
-                      min="0"
-                      placeholder="(mm)"
-                      onChange={(event) =>
-                        field.onChange(event.target.valueAsNumber)
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {showSuprailiacField ? (
+              <FormField
+                control={form.control}
+                name="suprailiac"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Supra-ilíaca</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        min="0"
+                        placeholder="(mm)"
+                        onChange={(event) =>
+                          field.onChange(event.target.valueAsNumber)
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : null}
 
-            <FormField
-              control={form.control}
-              name="triceps"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tricipital</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="number"
-                      min="0"
-                      placeholder="(mm)"
-                      onChange={(event) =>
-                        field.onChange(event.target.valueAsNumber)
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {showTricepsField ? (
+              <FormField
+                control={form.control}
+                name="triceps"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tricipital</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        min="0"
+                        placeholder="(mm)"
+                        onChange={(event) =>
+                          field.onChange(event.target.valueAsNumber)
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : null}
 
-            <FormField
-              control={form.control}
-              name="thigh"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Coxa</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="number"
-                      min="0"
-                      placeholder="(mm)"
-                      onChange={(event) =>
-                        field.onChange(event.target.valueAsNumber)
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {showThighField ? (
+              <FormField
+                control={form.control}
+                name="thigh"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Coxa</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        min="0"
+                        placeholder="(mm)"
+                        onChange={(event) =>
+                          field.onChange(event.target.valueAsNumber)
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : null}
 
-            <FormField
-              control={form.control}
-              name="calf"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Panturrilha medial</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="number"
-                      min="0"
-                      placeholder="(mm)"
-                      onChange={(event) =>
-                        field.onChange(event.target.valueAsNumber)
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {showCalfField ? (
+              <FormField
+                control={form.control}
+                name="calf"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Panturrilha medial</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        min="0"
+                        placeholder="(mm)"
+                        onChange={(event) =>
+                          field.onChange(event.target.valueAsNumber)
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : null}
 
             <div className="col-span-2 flex justify-end gap-3 pt-4">
               <Button variant="outline" type="button" onClick={handleClick}>

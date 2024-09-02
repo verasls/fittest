@@ -16,11 +16,12 @@ export function getSelectedClientDetails(state: State, clients: Array<Client>) {
   const clientId = evaluationData?.values.clientId;
   const client = clients.find((client) => client.id! === clientId);
   const clientName = client?.name;
+  const clientSex = client?.sex;
   const clientDob = client?.dateOfBirth;
   const clientAge =
     evaluationDate && clientDob
       ? differenceInYears(evaluationDate, clientDob)
       : null;
 
-  return { clientName, clientAge };
+  return { clientName, clientAge, clientSex };
 }
