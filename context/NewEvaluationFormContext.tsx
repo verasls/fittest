@@ -1,4 +1,10 @@
-import { Anamnesis, Perimeters, SelectClient, Skinfolds } from "@/lib/schema";
+import {
+  Anamnesis,
+  Observations,
+  Perimeters,
+  SelectClient,
+  Skinfolds,
+} from "@/lib/schema";
 import { parseAsStringLiteral, useQueryState } from "nuqs";
 import React, { createContext, useContext, useReducer, useEffect } from "react";
 
@@ -49,11 +55,18 @@ type SkinfoldsFormData = {
   values: Skinfolds;
 };
 
+type ObservationsFormData = {
+  step: "observations";
+  status: FormStatus;
+  values: Observations;
+};
+
 type FormData =
   | SelectClientFormData
   | AnamnesisFormData
   | PerimetersFormData
-  | SkinfoldsFormData;
+  | SkinfoldsFormData
+  | ObservationsFormData;
 
 export type State = {
   currentStep: Steps;
@@ -140,6 +153,11 @@ const initialState: State = {
         calf: undefined,
       },
     },
+    {
+      step: "observations",
+      status: initialStatus,
+      values: { observations: "" },
+    },
   ],
 };
 
@@ -147,7 +165,7 @@ type Action =
   | { type: "goToNextStep"; payload: Steps }
   | {
       type: "updateFormValues";
-      payload: SelectClient | Anamnesis | Perimeters | Skinfolds;
+      payload: SelectClient | Anamnesis | Perimeters | Skinfolds | Observations;
     }
   | { type: "updateFormStatus"; payload: FormStatus };
 

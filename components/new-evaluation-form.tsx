@@ -17,6 +17,7 @@ import {
   Perimeters,
   SelectClient,
   Skinfolds,
+  Observations,
 } from "@/lib/schema";
 import {
   FormStatus,
@@ -30,6 +31,7 @@ import useLeavePageWarning from "@/hooks/useLeavePageWarning";
 import AnamnesisForm from "@/components/anamnesis-form";
 import PerimetersForm from "@/components/perimeters-form";
 import SkinfoldsForm from "@/components/skinfolds-form";
+import ObservationsForm from "@/components/observations-form";
 
 type NewEvaluationFormProps = {
   clients: Array<Client>;
@@ -39,7 +41,8 @@ export type NewEvaluationForm =
   | UseFormReturn<SelectClient>
   | UseFormReturn<Anamnesis>
   | UseFormReturn<Perimeters>
-  | UseFormReturn<Skinfolds>;
+  | UseFormReturn<Skinfolds>
+  | UseFormReturn<Observations>;
 
 export async function getNewEvaluationFormStatus(
   form: NewEvaluationForm,
@@ -48,6 +51,7 @@ export async function getNewEvaluationFormStatus(
     | Anamnesis
     | Perimeters
     | Skinfolds
+    | Observations
     | undefined
 ): Promise<FormStatus> {
   const isValid = await form.trigger();
@@ -171,7 +175,9 @@ export default function NewEvaluationForm({ clients }: NewEvaluationFormProps) {
           <StepperContent value="skinfolds">
             <SkinfoldsForm clients={clients} formRef={formRef} />
           </StepperContent>
-          <StepperContent value="observations">Observações</StepperContent>
+          <StepperContent value="observations">
+            <ObservationsForm clients={clients} formRef={formRef} />
+          </StepperContent>
         </Stepper>
       </div>
     </div>

@@ -105,3 +105,7 @@ export const skinfoldsSchema = z.object({
 });
 
 export type Skinfolds = z.infer<typeof skinfoldsSchema>;
+
+export const observationsSchema = z.object({ observations: z.string() });
+
+export type Observations = z.infer<typeof observationsSchema>;
