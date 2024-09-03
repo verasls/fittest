@@ -1,4 +1,4 @@
-import { createNewUser, getUser } from "@/lib/data-services";
+import { createUser, readUser } from "@/lib/data-services";
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 
@@ -15,10 +15,10 @@ const authConfig = {
     },
     async signIn({ user }) {
       try {
-        const existingUser = await getUser(user.email);
+        const existingUser = await readUser(user.email);
 
         if (!existingUser)
-          await createNewUser({ name: user.name, email: user.email });
+          await createUser({ name: user.name, email: user.email });
 
         return true;
       } catch {
@@ -26,7 +26,7 @@ const authConfig = {
       }
     },
     async session({ session }) {
-      const user = await getUser(session.user.email);
+      const user = await readUser(session.user.email);
       session.user.id = user.id;
       return session;
     },
