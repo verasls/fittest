@@ -20,7 +20,7 @@ import {
   Observations,
 } from "@/lib/schema";
 import {
-  FormStatus,
+  NewEvaluationFormStatus,
   Steps,
   useNewEvaluationForm,
 } from "@/context/NewEvaluationFormContext";
@@ -53,7 +53,7 @@ export async function getNewEvaluationFormStatus(
     | Skinfolds
     | Observations
     | undefined
-): Promise<FormStatus> {
+): Promise<NewEvaluationFormStatus> {
   const isValid = await form.trigger();
   const values = form.getValues();
   const isDirty = JSON.stringify(values) !== JSON.stringify(currentFormState);

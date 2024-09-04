@@ -17,14 +17,14 @@ const steps = [
 ] as const;
 export type Steps = (typeof steps)[number];
 
-export type FormStatus = {
+export type NewEvaluationFormStatus = {
   isValid: boolean;
   isDirty: boolean;
   isSubmitted: boolean;
   isVisited: boolean;
 };
 
-const initialStatus: FormStatus = {
+const initialStatus: NewEvaluationFormStatus = {
   isValid: true,
   isDirty: false,
   isSubmitted: false,
@@ -33,47 +33,47 @@ const initialStatus: FormStatus = {
 
 type SelectClientFormData = {
   step: "client";
-  status: FormStatus;
+  status: NewEvaluationFormStatus;
   values: SelectClient;
 };
 
 type AnamnesisFormData = {
   step: "anamnesis";
-  status: FormStatus;
+  status: NewEvaluationFormStatus;
   values: Anamnesis;
 };
 
 type PerimetersFormData = {
   step: "perimeters";
-  status: FormStatus;
+  status: NewEvaluationFormStatus;
   values: Perimeters;
 };
 
 type SkinfoldsFormData = {
   step: "skinfolds";
-  status: FormStatus;
+  status: NewEvaluationFormStatus;
   values: Skinfolds;
 };
 
 type ObservationsFormData = {
   step: "observations";
-  status: FormStatus;
+  status: NewEvaluationFormStatus;
   values: Observations;
 };
 
-type FormData =
+type NewEvaluationFormData =
   | SelectClientFormData
   | AnamnesisFormData
   | PerimetersFormData
   | SkinfoldsFormData
   | ObservationsFormData;
 
-export type State = {
+export type NewEvaluationFormState = {
   currentStep: Steps;
-  formData: Array<FormData>;
+  formData: Array<NewEvaluationFormData>;
 };
 
-const initialState: State = {
+const initialState: NewEvaluationFormState = {
   currentStep: "client",
   formData: [
     {
@@ -161,15 +161,18 @@ const initialState: State = {
   ],
 };
 
-type Action =
+type NewEvaluationFormAction =
   | { type: "goToNextStep"; payload: Steps }
   | {
       type: "updateFormValues";
       payload: SelectClient | Anamnesis | Perimeters | Skinfolds | Observations;
     }
-  | { type: "updateFormStatus"; payload: FormStatus };
+  | { type: "updateFormStatus"; payload: NewEvaluationFormStatus };
 
-function reducer(state: State, action: Action): State {
+function reducer(
+  state: NewEvaluationFormState,
+  action: NewEvaluationFormAction
+): NewEvaluationFormState {
   switch (action.type) {
     case "goToNextStep":
       const updatedFormData = state.formData.map((data) => {
@@ -185,7 +188,7 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         currentStep: action.payload,
-        formData: updatedFormData as FormData[],
+        formData: updatedFormData as NewEvaluationFormData[],
       };
 
     case "updateFormValues":
@@ -201,7 +204,7 @@ function reducer(state: State, action: Action): State {
 
       return {
         ...state,
-        formData: updatedValues as FormData[],
+        formData: updatedValues as NewEvaluationFormData[],
       };
 
     case "updateFormStatus":
@@ -219,8 +222,8 @@ function reducer(state: State, action: Action): State {
 }
 
 type NewEvaluationFormContextType = {
-  state: State;
-  dispatch: React.Dispatch<Action>;
+  state: NewEvaluationFormState;
+  dispatch: React.Dispatch<NewEvaluationFormAction>;
 };
 
 const NewEvaluationFormContext = createContext<
@@ -237,7 +240,9 @@ export function NewEvaluationFormProvider({
     parseAsStringLiteral(steps).withDefault("client")
   );
 
-  const [state, dispatch] = useReducer<React.Reducer<State, Action>>(reducer, {
+  const [state, dispatch] = useReducer<
+    React.Reducer<NewEvaluationFormState, NewEvaluationFormAction>
+  >(reducer, {
     ...initialState,
     currentStep,
   });
@@ -250,7 +255,7 @@ export function NewEvaluationFormProvider({
 
   const value = {
     state,
-    dispatch: (action: Action) => {
+    dispatch: (action: NewEvaluationFormAction) => {
       if (action.type === "goToNextStep")
         setCurrentStep(action.payload, { scroll: true });
       dispatch(action);
