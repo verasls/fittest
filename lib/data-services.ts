@@ -1,31 +1,30 @@
 import { auth } from "@/lib/auth";
 import { Client, clientSchema } from "@/lib/schema";
-import { supabase } from "@/lib/supabase";
+import { getSupabase, initSupabase } from "@/lib/supabase";
 
-type User = {
-  name: string;
-  email: string;
-};
+let supabaseInitialized = false;
 
-export async function createUser(newUser: User) {
-  const { data, error } = await supabase.from("users").insert([newUser]);
-
-  if (error) throw new Error("User could not be created");
-
-  return data;
+async function ensureSupabaseInitialized() {
+  if (!supabaseInitialized) {
+    try {
+      const session = await auth();
+      const supabaseAccessToken = session!.supabaseAccessToken;
+      await initSupabase(supabaseAccessToken);
+      supabaseInitialized = true;
+    } catch (error) {
+      console.error("Failed to initialize Supabase client:", error);
+      throw error;
+    }
+  }
 }
 
-export async function readUser(email: string) {
-  const { data } = await supabase
-    .from("users")
-    .select("*")
-    .eq("email", email)
-    .single();
-
-  return data;
+async function getSupabaseClient() {
+  await ensureSupabaseInitialized();
+  return getSupabase();
 }
 
 export async function readClientById(clientId: string): Promise<Client> {
+  const supabase = await getSupabaseClient();
   const session = await auth();
   if (!session) throw new Error("Você precisa estar autenticado");
 
@@ -61,6 +60,7 @@ export async function readClientById(clientId: string): Promise<Client> {
 }
 
 export async function readAllClients(): Promise<Array<Client>> {
+  const supabase = await getSupabaseClient();
   const session = await auth();
   if (!session) throw new Error("Você precisa estar autenticado");
 

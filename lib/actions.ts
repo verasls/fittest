@@ -3,9 +3,30 @@
 import { auth, signIn, signOut } from "@/lib/auth";
 import { readClientById } from "@/lib/data-services";
 import { Client } from "@/lib/schema";
-import { supabase } from "@/lib/supabase";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { getSupabase, initSupabase } from "@/lib/supabase";
+
+let supabaseInitialized = false;
+
+async function ensureSupabaseInitialized() {
+  if (!supabaseInitialized) {
+    try {
+      const session = await auth();
+      const supabaseAccessToken = session!.supabaseAccessToken;
+      await initSupabase(supabaseAccessToken);
+      supabaseInitialized = true;
+    } catch (error) {
+      console.error("Failed to initialize Supabase client:", error);
+      throw error;
+    }
+  }
+}
+
+async function getSupabaseClient() {
+  await ensureSupabaseInitialized();
+  return getSupabase();
+}
 
 export async function signInAction() {
   await signIn("google", { redirectTo: "/app/dashboard" });
@@ -16,6 +37,7 @@ export async function signOutAction() {
 }
 
 export async function createClient(formData: Client) {
+  const supabase = await getSupabaseClient();
   const session = await auth();
   if (!session) throw new Error("Você precisa estar autenticado");
 
@@ -27,6 +49,7 @@ export async function createClient(formData: Client) {
 }
 
 export async function updateClientById(updatedValues: Client) {
+  const supabase = await getSupabaseClient();
   const session = await auth();
   if (!session) throw new Error("Você precisa estar autenticado");
 
@@ -46,6 +69,7 @@ export async function updateClientById(updatedValues: Client) {
 }
 
 export async function deleteClientById(clientId: string) {
+  const supabase = await getSupabaseClient();
   const session = await auth();
   if (!session) throw new Error("Você precisa estar autenticado");
 

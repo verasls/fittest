@@ -1,32 +1,32 @@
-import { createUser, readUser } from "@/lib/data-services";
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
+import { SupabaseAdapter } from "@auth/supabase-adapter";
+import { SignJWT } from "jose";
 
 const authConfig = {
-  providers: [
-    Google({
-      clientId: process.env.AUTH_GOOGLE_ID,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET,
-    }),
-  ],
+  adapter: SupabaseAdapter({
+    url: process.env.SUPABASE_URL,
+    secret: process.env.SUPABASE_SERVICE_ROLE_KEY,
+  }),
   callbacks: {
-    authorized({ auth }: { auth: unknown }) {
-      return !!auth;
-    },
-    async signIn({ user }) {
-      try {
-        const existingUser = await readUser(user.email);
+    async session({ session, user }) {
+      const signingSecret = process.env.SUPABASE_JWT_SECRET;
+      if (signingSecret) {
+        const payload = {
+          aud: "authenticated",
+          exp: Math.floor(new Date(session.expires).getTime() / 1000),
+          sub: user.id,
+          email: user.email,
+          role: "authenticated",
+        };
 
-        if (!existingUser)
-          await createUser({ name: user.name, email: user.email });
+        const jwt = await new SignJWT(payload)
+          .setProtectedHeader({ alg: "HS256" })
+          .setExpirationTime("2h")
+          .sign(new TextEncoder().encode(signingSecret));
 
-        return true;
-      } catch {
-        return false;
+        session.supabaseAccessToken = jwt;
       }
-    },
-    async session({ session }) {
-      const user = await readUser(session.user.email);
       session.user.id = user.id;
       return session;
     },
@@ -34,6 +34,12 @@ const authConfig = {
   pages: {
     signIn: "/login",
   },
+  providers: [
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+    }),
+  ],
 };
 
 export const {
